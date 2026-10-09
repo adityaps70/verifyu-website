@@ -1,0 +1,40 @@
+# VerifyU website — Apache settings for Hostinger (static site, no PHP)
+Options -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404/index.html
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+# Always HTTPS
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE]
+# Old WordPress / store-listing URLs → new pages (keep the app-store links working)
+RewriteRule ^privacy-policy/?$ /legal/privacy [R=301,L]
+RewriteRule ^terms(\.php)?/?$ /legal/terms [R=301,L]
+RewriteRule ^legal/?$ /legal/terms [R=301,L]
+RewriteRule ^impact/?$ /press [R=301,L]
+RewriteRule ^volunteer/?$ /safety-champions [R=301,L]
+RewriteRule ^rewards-partners/?$ /partners#brands [R=301,L,NE]
+</IfModule>
+
+# Caching: long for assets that never change in place, short for pages
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/webp "access plus 1 year"
+ExpiresByType image/jpeg "access plus 1 year"
+ExpiresByType image/png "access plus 1 year"
+ExpiresByType image/svg+xml "access plus 1 year"
+ExpiresByType font/woff2 "access plus 1 year"
+ExpiresByType video/mp4 "access plus 1 year"
+ExpiresByType text/css "access plus 7 days"
+ExpiresByType text/javascript "access plus 7 days"
+ExpiresByType application/javascript "access plus 7 days"
+ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+<IfModule mod_headers.c>
+Header set X-Content-Type-Options "nosniff"
+Header set Referrer-Policy "strict-origin-when-cross-origin"
+Header set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+AddType font/woff2 .woff2
+AddType image/webp .webp

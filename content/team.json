@@ -1,0 +1,68 @@
+[
+  {
+    "id": "saurabh-saraswat",
+    "name": "Capt. Saurabh Saraswat",
+    "role": "Founder",
+    "summary": "Master Mariner, 16 years at sea",
+    "bio": "Master Mariner. Sixteen years at sea (1998–2014), a captain at 31. Now working on identification, emergency preparedness and institutional partnerships.",
+    "photo": "/images/team/saurabh-saraswat.jpg",
+    "linkedin": "",
+    "order": 1,
+    "visible": true
+  },
+  {
+    "id": "prakhar-pathak",
+    "name": "Prakhar Pathak",
+    "role": "Co-Founder & CEO",
+    "summary": "Marine engineer turned entrepreneur",
+    "bio": "Marine engineer turned entrepreneur. Leads vision, strategy, product direction and growth.",
+    "photo": "/images/team/prakhar-pathak.jpg",
+    "linkedin": "",
+    "order": 2,
+    "visible": true
+  },
+  {
+    "id": "ansarul-haque",
+    "name": "Ansarul Haque",
+    "role": "Co-Founder",
+    "summary": "Execution and partnerships",
+    "bio": "Strategic execution, business development and the partnerships that take VerifyU into new communities.",
+    "photo": "/images/team/ansarul-haque.jpg",
+    "linkedin": "",
+    "order": 3,
+    "visible": true
+  },
+  {
+    "id": "hemant-misra",
+    "name": "Hemant Misra",
+    "role": "Chief Technology Officer",
+    "summary": "Architecture, product, security",
+    "bio": "Technology architecture, product development, cybersecurity and platform infrastructure.",
+    "photo": "/images/team/hemant-misra.jpg",
+    "linkedin": "",
+    "order": 4,
+    "visible": true
+  },
+  {
+    "id": "rahul-gupta",
+    "name": "Capt. Rahul Kr Gupta",
+    "role": "Chief Marketing Officer",
+    "summary": "Mariner and marketer; brand and registration drives",
+    "bio": "Mariner and marketer. Brand, communication and the registration drives that reach real communities.",
+    "photo": "/images/team/rahul-gupta.jpg",
+    "linkedin": "",
+    "order": 5,
+    "visible": true
+  },
+  {
+    "id": "moona-ssahani",
+    "name": "Moona Ssahani",
+    "role": "Chief Financial Officer",
+    "summary": "Finance, governance and operating discipline",
+    "bio": "Finance, governance and the operating discipline behind a safety product people rely on.",
+    "photo": "/images/team/moona-ssahani.jpg",
+    "linkedin": "",
+    "order": 6,
+    "visible": true
+  }
+]

@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>VerifyU Admin</title>
+<link rel="icon" href="/images/icon-32.png">
+<style>
+:root{--purple:#632899;--violet:#9A4DD9;--teal:#01C4A2;--ink:#16141C;--ink-2:#3B3845;--ink-3:#6B6878;--ink-4:#9A97A6;--line:#E6E4EC;--cloud:#F6F7FB;--purple-50:#F4EDFB;--teal-50:#E6FAF5;--sos:#E0342C;--sos-50:#FCE9E8;--r:14px}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{font:15px/1.5 Inter,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--cloud);-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+a{color:var(--purple)}
+.hidden{display:none!important}
+/* auth */
+.auth{min-height:100%;display:grid;place-items:center;padding:24px}
+.auth-card{width:100%;max-width:400px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:32px;box-shadow:0 24px 48px -24px rgba(22,20,28,.2)}
+.auth-card img{width:44px;height:44px;border-radius:12px}
+.auth-card h1{font-size:22px;letter-spacing:-.02em;margin:16px 0 4px}
+.auth-card p{color:var(--ink-3);margin:0 0 20px;font-size:14px}
+/* layout */
+.app{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:100%}
+.side{background:#fff;border-right:1px solid var(--line);padding:20px 16px;display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh}
+.side .brand{display:flex;align-items:center;gap:10px;padding:6px 8px 18px;font-weight:700;letter-spacing:-.02em}
+.side .brand img{width:34px;height:34px;border-radius:10px}
+.side .brand small{display:block;font-weight:500;color:var(--ink-4);font-size:12px}
+.nav-btn{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border-radius:12px;text-align:left;font-weight:500;color:var(--ink-2)}
+.nav-btn:hover{background:var(--cloud)}.nav-btn.is-active{background:var(--purple-50);color:var(--purple);font-weight:600}
+.nav-btn .n{margin-left:auto;font-size:12px;color:var(--ink-4);background:var(--cloud);padding:2px 8px;border-radius:999px}
+.side .foot{margin-top:auto;display:flex;flex-direction:column;gap:6px}
+.main{padding:28px clamp(20px,4vw,48px) 80px;max-width:1180px}
+.top{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.top h1{font-size:26px;letter-spacing:-.03em;margin:0}
+.top p{margin:4px 0 0;color:var(--ink-3)}
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:0 18px;border-radius:999px;font-weight:600;font-size:14px;border:1px solid var(--line);background:#fff;color:var(--ink);transition:transform .2s,box-shadow .2s}
+.btn:hover{box-shadow:0 8px 20px -12px rgba(22,20,28,.4)}
+.btn.primary{background:var(--purple);color:#fff;border-color:var(--purple)}
+.btn.teal{background:var(--teal);color:#053D33;border-color:var(--teal)}
+.btn.danger{color:var(--sos);border-color:#F3C3C0}
+.btn.sm{min-height:34px;padding:0 12px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:default;box-shadow:none}
+.btn svg{width:16px;height:16px}
+/* cards & lists */
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px}
+.grid{display:grid;gap:16px}.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.stat b{display:block;font-size:30px;letter-spacing:-.03em}.stat span{color:var(--ink-3);font-size:13px}
+.list{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px}
+.row:hover{border-color:#D9BDF7}
+.row .thumb{width:52px;height:52px;border-radius:12px;background:var(--cloud);object-fit:cover;flex:none;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--purple);overflow:hidden}
+.row .thumb img{width:100%;height:100%;object-fit:cover}
+.row .txt{min-width:0;flex:1}.row .txt b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.row .txt span{color:var(--ink-3);font-size:13px}
+.row .acts{display:flex;gap:4px;flex:none}
+.icon-btn{width:34px;height:34px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;color:var(--ink-3)}
+.icon-btn:hover{background:var(--cloud);color:var(--ink)}.icon-btn svg{width:16px;height:16px}
+.tag{display:inline-flex;align-items:center;padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:600;background:var(--cloud);color:var(--ink-3)}
+.tag.on{background:var(--teal-50);color:#0B6E5B}.tag.off{background:#FFF4E5;color:#8A4B00}
+.empty{padding:36px;text-align:center;color:var(--ink-3);border:1px dashed var(--line);border-radius:18px;background:#fff}
+/* forms */
+.form{display:grid;gap:16px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.field{display:flex;flex-direction:column;gap:6px}.field.wide{grid-column:1/-1}
+.field label{font-size:13px;font-weight:600;color:var(--ink-2)}
+.field small{color:var(--ink-4);font-size:12px}
+.input{width:100%;min-height:42px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;outline:none}
+.input:focus{border-color:var(--purple);box-shadow:0 0 0 4px var(--purple-50)}
+textarea.input{min-height:120px;resize:vertical;line-height:1.5}
+textarea.input.md{min-height:360px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px}
+.switch{display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-weight:500}
+.switch input{width:40px;height:22px;appearance:none;background:var(--line);border-radius:999px;position:relative;transition:background .2s}
+.switch input::after{content:"";position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:999px;background:#fff;transition:transform .2s}
+.switch input:checked{background:var(--teal)}.switch input:checked::after{transform:translateX(18px)}
+.imgpick{display:flex;gap:14px;align-items:center}
+.imgpick .prev{width:96px;height:96px;border-radius:14px;background:var(--cloud);border:1px solid var(--line);object-fit:cover;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--ink-4);font-size:12px}
+.imgpick .prev img{width:100%;height:100%;object-fit:cover}
+.imgpick .prev.contain img{object-fit:contain;padding:8px}
+.editor{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.mdprev{border:1px solid var(--line);border-radius:12px;padding:16px 20px;background:#fff;min-height:360px;overflow:auto;font-size:15px;line-height:1.6;color:var(--ink-2)}
+.mdprev h2{font-size:22px;letter-spacing:-.02em;margin:1.2em 0 .4em;color:var(--ink)}.mdprev h3{font-size:18px;margin:1em 0 .3em;color:var(--ink)}
+.mdprev blockquote{margin:1em 0;padding-left:16px;border-left:3px solid var(--teal)}.mdprev img{max-width:100%;border-radius:10px}
+.mdprev pre{background:var(--ink);color:#fff;padding:12px;border-radius:10px;overflow:auto;font-size:13px}
+.bar{position:sticky;bottom:0;display:flex;gap:10px;align-items:center;justify-content:flex-end;padding:14px 0;background:linear-gradient(180deg,rgba(246,247,251,0),var(--cloud) 30%)}
+.hint{font-size:13px;color:var(--ink-3)}
+.msg{padding:12px 14px;border-radius:12px;font-size:14px;font-weight:500}
+.msg.err{background:var(--sos-50);color:var(--sos)}.msg.ok{background:var(--teal-50);color:#0B6E5B}
+.log{background:var(--ink);color:#DDE;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.5;padding:16px;border-radius:14px;white-space:pre-wrap;max-height:360px;overflow:auto}
+.media{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.media button{border:1px solid var(--line);border-radius:14px;background:#fff;padding:8px;text-align:left;display:flex;flex-direction:column;gap:6px}
+.media button:hover{border-color:var(--purple)}.media img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;background:var(--cloud)}
+.media small{font-size:11px;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%}
+.modal{position:fixed;inset:0;background:rgba(22,20,28,.5);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50}
+.modal .card{width:100%;max-width:820px;max-height:90vh;overflow:auto}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 18px;border-radius:999px;font-weight:500;box-shadow:0 20px 40px -20px rgba(0,0,0,.6);z-index:60}
+.steps{counter-reset:s;display:grid;gap:10px}.steps li{list-style:none;display:flex;gap:12px;align-items:flex-start;color:var(--ink-2)}
+.steps li::before{counter-increment:s;content:counter(s);flex:none;width:24px;height:24px;border-radius:999px;background:var(--purple);color:#fff;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;margin-top:2px}
+@media (max-width:900px){.app{grid-template-columns:1fr}.side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;border-right:0;border-bottom:1px solid var(--line)}.side .brand{width:100%;padding-bottom:8px}.side .foot{margin:0;flex-direction:row}.form,.editor,.grid-3,.grid-2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="auth" class="auth hidden">
+  <form class="auth-card" id="authForm">
+    <img src="/images/verifyu-logo.png" alt="">
+    <h1 id="authTitle">Sign in</h1>
+    <p id="authText">VerifyU website admin.</p>
+    <div class="field"><label for="pw">Password</label><input class="input" id="pw" type="password" autocomplete="current-password" required minlength="8"></div>
+    <div id="authMsg" class="msg err hidden" style="margin-top:12px"></div>
+    <button class="btn primary" style="margin-top:16px;width:100%;justify-content:center" type="submit" id="authBtn">Sign in</button>
+  </form>
+</div>
+
+<div id="app" class="app hidden">
+  <aside class="side">
+    <div class="brand"><img src="/images/verifyu-logo.png" alt=""><div>VerifyU<small>Website admin</small></div></div>
+    <button class="nav-btn" data-view="dashboard">Dashboard</button>
+    <button class="nav-btn" data-view="articles">Articles<span class="n" data-count="articles"></span></button>
+    <button class="nav-btn" data-view="team">Team<span class="n" data-count="team"></span></button>
+    <button class="nav-btn" data-view="advisory">Advisory board<span class="n" data-count="advisory"></span></button>
+    <button class="nav-btn" data-view="partners">Partners<span class="n" data-count="partners"></span></button>
+    <button class="nav-btn" data-view="media">Media</button>
+    <button class="nav-btn" data-view="settings">Settings</button>
+    <div class="foot">
+      <button class="btn teal" id="publishBtn" style="justify-content:center">Publish changes</button>
+      <a class="btn" href="/preview/" target="_blank" style="justify-content:center" data-preview>Open preview</a>
+      <button class="btn sm" id="logout" style="justify-content:center">Sign out</button>
+    </div>
+  </aside>
+  <main class="main" id="main"></main>
+</div>
+<div id="toast" class="toast hidden"></div>
+
+<script src="/vendor/marked.umd.js"></script>
+<script>
+(() => {
+  const $ = (s, c = document) => c.querySelector(s), $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
+  const esc = (s = '') => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const api = async (path, opts = {}) => { const r = await fetch('/api' + path, Object.assign({ headers: { 'Content-Type': 'application/json' }, credentials: 'same-origin' }, opts)); const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(j.error || r.statusText); return j; };
+  const toast = (t) => { const el = $('#toast'); el.textContent = t; el.classList.remove('hidden'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.add('hidden'), 2600); };
+  const I = { edit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>', up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>', down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M19 12l-7 7-7-7"/></svg>', trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/></svg>', plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>' };
+
+  const DEFS = {
+    articles: { title: 'Articles', blurb: 'Blog posts and guides. Only published articles appear on the site; the Blog link shows in the menu when at least one is published.', label: a => a.title, sub: a => `${a.date || ''} · ${a.published ? 'Published' : 'Draft'}${a.tags && a.tags.length ? ' · ' + a.tags.join(', ') : ''}`, thumb: a => a.cover, flag: a => a.published, flagText: ['Published', 'Draft'], blank: () => ({ title: '', slug: '', excerpt: '', cover: '', author: 'VerifyU team', date: new Date().toISOString().slice(0, 10), tags: [], body: '', published: false }),
+      fields: [['title', 'Title', 'text', 'wide'], ['slug', 'URL slug', 'text', '', 'Leave empty to create it from the title. Becomes /blog/your-slug'], ['date', 'Date', 'date'], ['author', 'Author', 'text'], ['tags', 'Tags', 'text', '', 'Comma-separated, e.g. Guides, Family'], ['excerpt', 'Excerpt', 'textarea', 'wide', 'One or two sentences shown on cards and in search results'], ['cover', 'Cover image', 'image', 'wide'], ['body', 'Article', 'markdown', 'wide'], ['published', 'Published', 'switch']] },
+    team: { title: 'Team', blurb: 'Shown on the About page and in the homepage carousel, in this order.', label: p => p.name, sub: p => p.role, thumb: p => p.photo, flag: p => p.visible !== false, flagText: ['Visible', 'Hidden'], blank: () => ({ name: '', role: '', summary: '', bio: '', photo: '', linkedin: '', visible: true }),
+      fields: [['name', 'Full name', 'text'], ['role', 'Role', 'text'], ['summary', 'One line (homepage)', 'text', 'wide', 'Short line under the name in the homepage carousel'], ['bio', 'Bio (About page)', 'textarea', 'wide'], ['photo', 'Photo', 'image', 'wide', 'Portrait, ideally 4:5 (800×1000)'], ['linkedin', 'LinkedIn URL', 'text', 'wide'], ['visible', 'Visible on the site', 'switch']] },
+    advisory: { title: 'Advisory board', blurb: 'Appears on the About page below the team — only when at least one adviser is visible.', label: p => p.name, sub: p => [p.role, p.affiliation].filter(Boolean).join(' · '), thumb: p => p.photo, flag: p => p.visible !== false, flagText: ['Visible', 'Hidden'], blank: () => ({ name: '', role: '', affiliation: '', bio: '', photo: '', linkedin: '', visible: true }),
+      fields: [['name', 'Full name', 'text'], ['role', 'Role', 'text', '', 'e.g. Adviser, Emergency medicine'], ['affiliation', 'Affiliation', 'text', 'wide', 'Hospital, institution or company (optional)'], ['bio', 'Bio', 'textarea', 'wide'], ['photo', 'Photo', 'image', 'wide'], ['linkedin', 'LinkedIn URL', 'text', 'wide'], ['visible', 'Visible on the site', 'switch']] },
+    partners: { title: 'Partners', blurb: 'Listed on the Partners page under "Partners we work with" — only with each partner’s written agreement.', label: p => p.name, sub: p => [p.category, p.website].filter(Boolean).join(' · '), thumb: p => p.logo, thumbContain: true, flag: p => p.visible !== false, flagText: ['Visible', 'Hidden'], blank: () => ({ name: '', category: '', logo: '', website: '', description: '', visible: true }),
+      fields: [['name', 'Partner name', 'text'], ['category', 'Category', 'text', '', 'e.g. Healthcare, Brand, NGO, Event'], ['website', 'Website', 'text', 'wide'], ['description', 'One line about the partnership', 'text', 'wide'], ['logo', 'Logo', 'image', 'wide', 'PNG or SVG with a transparent background works best'], ['visible', 'Visible on the site', 'switch']] },
+  };
+
+  let state = { view: 'dashboard', data: {}, dirty: {}, editing: null, info: {} };
+
+  /* ---------- auth ---------- */
+  async function boot() {
+    state.info = await api('/state');
+    if (state.info.needsSetup) { $('#authTitle').textContent = 'Set your admin password'; $('#authText').textContent = 'First run. Choose a password of at least 8 characters — you will need it every time you open the admin.'; $('#authBtn').textContent = 'Set password'; $('#pw').autocomplete = 'new-password'; show('auth'); return; }
+    if (!state.info.loggedIn) { show('auth'); return; }
+    show('app'); previewLinks(); render();
+  }
+  function previewLinks() { $$('[data-preview]').forEach(a => a.href = state.info.previewUrl || '/'); }
+  function show(which) { $('#auth').classList.toggle('hidden', which !== 'auth'); $('#app').classList.toggle('hidden', which !== 'app'); }
+  $('#authForm').addEventListener('submit', async e => {
+    e.preventDefault(); const pw = $('#pw').value; const m = $('#authMsg'); m.classList.add('hidden');
+    try { if (state.info.needsSetup) { await api('/setup', { method: 'POST', body: JSON.stringify({ password: pw }) }); } await api('/login', { method: 'POST', body: JSON.stringify({ password: pw }) }); $('#pw').value = ''; await boot(); }
+    catch (err) { m.textContent = err.message; m.classList.remove('hidden'); }
+  });
+  $('#logout').addEventListener('click', async () => { await api('/logout', { method: 'POST' }); location.reload(); });
+
+  /* ---------- data ---------- */
+  async function load(col) { if (!state.data[col]) state.data[col] = (await api('/content/' + col)).items; return state.data[col]; }
+  async function save(col) { const r = await api('/content/' + col, { method: 'PUT', body: JSON.stringify({ items: state.data[col] }) }); state.data[col] = r.items; state.dirty[col] = false; state.info.counts[col] = r.items.length; counts(); toast('Saved. Press “Publish changes” to update the site.'); }
+  function counts() { $$('[data-count]').forEach(el => { el.textContent = state.info.counts ? state.info.counts[el.dataset.count] : ''; }); }
+  window.addEventListener('beforeunload', e => { if (Object.values(state.dirty).some(Boolean) || state.editing) { e.preventDefault(); e.returnValue = ''; } });
+
+  /* ---------- views ---------- */
+  $$('.nav-btn').forEach(b => b.addEventListener('click', () => { if (state.editing && !confirm('Discard the changes in the open form?')) return; state.editing = null; state.view = b.dataset.view; render(); }));
+  async function render() {
+    $$('.nav-btn').forEach(b => b.classList.toggle('is-active', b.dataset.view === state.view)); counts();
+    const m = $('#main'); m.innerHTML = '<p class="hint">Loading…</p>';
+    if (state.view === 'dashboard') return dashboard(m);
+    if (state.view === 'media') return media(m);
+    if (state.view === 'settings') return settings(m);
+    if (state.view === 'publish') return publish(m);
+    return collection(m, state.view);
+  }
+
+  async function dashboard(m) {
+    const lp = state.info.lastPublish; const c = state.info.counts || {};
+    m.innerHTML = `
+      <div class="top"><div><h1>Dashboard</h1><p>Edit content on the left, then press <b>Publish changes</b> to rebuild the site${state.info.deployConfigured ? ' and deploy it' : ''}.</p></div><button class="btn teal" data-go="publish">Publish changes</button></div>
+      <div class="grid grid-3" style="margin-bottom:16px">
+        <div class="card stat"><b>${c.articles || 0}</b><span>articles (drafts included)</span></div>
+        <div class="card stat"><b>${(c.team || 0) + (c.advisory || 0)}</b><span>people: team + advisory board</span></div>
+        <div class="card stat"><b>${c.partners || 0}</b><span>partners listed</span></div>
+      </div>
+      <div class="grid grid-2">
+        <div class="card"><h3 style="margin:0 0 10px">Last publish</h3>${lp ? `<p style="margin:0;color:var(--ink-2)">${new Date(lp.at).toLocaleString()} — ${lp.ok ? (lp.deployed ? 'built and deployed ✔' : 'built ✔ (upload dist/ to go live)') : 'failed ✖'}</p>` : '<p style="margin:0;color:var(--ink-3)">Not published from this admin yet.</p>'}</div>
+        <div class="card"><h3 style="margin:0 0 10px">How it works</h3><ol class="steps" style="padding:0;margin:0"><li>Add or edit articles, team, advisers or partners and press <b>Save</b>.</li><li>Press <b>Publish changes</b> — the site is rebuilt from your content.</li><li>${state.info.deployConfigured ? 'The deploy command uploads it, so the live site updates in a minute or two.' : 'Upload the <code>dist</code> folder to your host (or set a deploy command in Settings so this happens automatically).'}</li></ol></div>
+      </div>`;
+    $('[data-go="publish"]', m).addEventListener('click', () => { state.view = 'publish'; render(); });
+  }
+
+  async function collection(m, col) {
+    const def = DEFS[col]; const items = await load(col);
+    if (state.editing && state.editing.col === col) return form(m, col, state.editing.index);
+    m.innerHTML = `<div class="top"><div><h1>${def.title}</h1><p>${def.blurb}</p></div><div style="display:flex;gap:8px"><button class="btn" id="saveOrder" ${state.dirty[col] ? '' : 'disabled'}>Save order</button><button class="btn primary" id="add">${I.plus} Add ${col === 'articles' ? 'article' : col === 'partners' ? 'partner' : 'person'}</button></div></div>
+      ${items.length ? `<div class="list">${items.map((it, i) => `<div class="row">
+        <div class="thumb ${def.thumbContain ? 'contain' : ''}">${def.thumb(it) ? `<img src="${esc(def.thumb(it))}" alt="">` : esc((def.label(it) || '?').charAt(0))}</div>
+        <div class="txt"><b>${esc(def.label(it) || '(untitled)')}</b><span>${esc(def.sub(it) || '')}</span></div>
+        <span class="tag ${def.flag(it) ? 'on' : 'off'}">${def.flag(it) ? def.flagText[0] : def.flagText[1]}</span>
+        <div class="acts"><button class="icon-btn" data-up="${i}" title="Move up" ${i === 0 ? 'disabled' : ''}>${I.up}</button><button class="icon-btn" data-down="${i}" title="Move down" ${i === items.length - 1 ? 'disabled' : ''}>${I.down}</button><button class="icon-btn" data-edit="${i}" title="Edit">${I.edit}</button><button class="icon-btn" data-del="${i}" title="Delete">${I.trash}</button></div>
+      </div>`).join('')}</div>` : `<div class="empty">Nothing here yet. Add the first ${col === 'articles' ? 'article' : 'entry'} — it appears on the site after you publish.</div>`}`;
+    $('#add', m).addEventListener('click', () => { items.push(def.blank()); state.editing = { col, index: items.length - 1, isNew: true }; render(); });
+    $('#saveOrder', m).addEventListener('click', () => save(col).then(render));
+    $$('[data-edit]', m).forEach(b => b.addEventListener('click', () => { state.editing = { col, index: +b.dataset.edit }; render(); }));
+    $$('[data-del]', m).forEach(b => b.addEventListener('click', async () => { const it = items[+b.dataset.del]; if (!confirm(`Delete “${def.label(it)}”? This cannot be undone after publishing.`)) return; items.splice(+b.dataset.del, 1); await save(col); render(); }));
+    const move = (i, d) => { const [x] = items.splice(i, 1); items.splice(i + d, 0, x); items.forEach((it, k) => it.order = k + 1); state.dirty[col] = true; render(); };
+    $$('[data-up]', m).forEach(b => b.addEventListener('click', () => move(+b.dataset.up, -1)));
+    $$('[data-down]', m).forEach(b => b.addEventListener('click', () => move(+b.dataset.down, 1)));
+  }
+
+  function form(m, col, index) {
+    const def = DEFS[col]; const it = state.data[col][index]; const isNew = state.editing.isNew;
+    const field = ([k, label, type, cls = '', help = '']) => {
+      const v = it[k] === undefined ? '' : it[k];
+      let ctl = '';
+      if (type === 'text' || type === 'date') ctl = `<input class="input" name="${k}" type="${type}" value="${esc(Array.isArray(v) ? v.join(', ') : v)}">`;
+      else if (type === 'textarea') ctl = `<textarea class="input" name="${k}">${esc(v)}</textarea>`;
+      else if (type === 'switch') ctl = `<label class="switch"><input type="checkbox" name="${k}" ${v ? 'checked' : ''}> <span>${label}</span></label>`;
+      else if (type === 'image') ctl = `<div class="imgpick"><div class="prev ${col === 'partners' ? 'contain' : ''}" data-prev="${k}">${v ? `<img src="${esc(v)}" alt="">` : 'No image'}</div><div style="display:flex;flex-direction:column;gap:8px"><input type="hidden" name="${k}" value="${esc(v)}"><div style="display:flex;gap:8px;flex-wrap:wrap"><label class="btn sm">Upload<input type="file" accept="image/*" data-upload="${k}" hidden></label><button type="button" class="btn sm" data-library="${k}">Choose from media</button><button type="button" class="btn sm danger" data-clear="${k}">Remove</button></div><small class="hint">${help}</small></div></div>`;
+      else if (type === 'markdown') ctl = `<div class="editor"><div><textarea class="input md" name="${k}" placeholder="Write in Markdown — ## Heading, **bold**, - list, > quote, ![alt](image url)">${esc(v)}</textarea><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><label class="btn sm">Insert image<input type="file" accept="image/*" data-inline hidden></label><span class="hint">Headings: ## and ###. Links: [text](https://…). Lists: - item or 1. item.</span></div></div><div class="mdprev" data-mdprev></div></div>`;
+      return `<div class="field ${cls}">${type === 'switch' ? '' : `<label>${label}</label>`}${ctl}${help && type !== 'image' ? `<small>${help}</small>` : ''}</div>`;
+    };
+    m.innerHTML = `<div class="top"><div><h1>${isNew ? 'New' : 'Edit'} — ${def.title}</h1><p>${col === 'articles' ? 'Save as a draft any time. Turn on “Published” when it is ready, then publish the site.' : 'Save, then press “Publish changes” to update the site.'}</p></div><button class="btn" id="back">← Back to list</button></div>
+      <form class="card" id="f"><div class="form">${def.fields.map(field).join('')}</div><div id="fmsg" class="msg err hidden" style="margin-top:14px"></div></form>
+      <div class="bar"><span class="hint" id="fhint"></span><button class="btn" id="cancel">Cancel</button><button class="btn primary" id="save">Save</button></div>`;
+    const f = $('#f', m);
+    const read = () => { const o = Object.assign({}, it); def.fields.forEach(([k, , type]) => { const el = f.elements[k]; if (!el) return; if (type === 'switch') o[k] = el.checked; else if (k === 'tags') o[k] = el.value.split(',').map(s => s.trim()).filter(Boolean); else o[k] = el.value; }); return o; };
+    const prev = $('[data-mdprev]', m); const ta = $('textarea.md', m);
+    const renderPrev = () => { if (prev && ta) prev.innerHTML = marked.parse(ta.value || '*Nothing yet — start writing on the left.*'); };
+    renderPrev(); ta && ta.addEventListener('input', renderPrev);
+    const uploadFile = async (file) => { const dataUrl = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(file); }); return (await api('/upload', { method: 'POST', body: JSON.stringify({ name: file.name, dataUrl }) })).path; };
+    const setImg = (k, path) => { f.elements[k].value = path; const p = $(`[data-prev="${k}"]`, m); p.innerHTML = path ? `<img src="${esc(path)}" alt="">` : 'No image'; };
+    $$('[data-upload]', m).forEach(inp => inp.addEventListener('change', async () => { if (!inp.files[0]) return; try { $('#fhint').textContent = 'Uploading…'; setImg(inp.dataset.upload, await uploadFile(inp.files[0])); $('#fhint').textContent = ''; } catch (e) { alert(e.message); $('#fhint').textContent = ''; } }));
+    $$('[data-clear]', m).forEach(b => b.addEventListener('click', () => setImg(b.dataset.clear, '')));
+    $$('[data-library]', m).forEach(b => b.addEventListener('click', () => library(path => setImg(b.dataset.library, path))));
+    const inline = $('[data-inline]', m); inline && inline.addEventListener('change', async () => { if (!inline.files[0]) return; try { const p = await uploadFile(inline.files[0]); const s = ta.selectionStart; ta.value = ta.value.slice(0, s) + `\n![${inline.files[0].name.replace(/\.[^.]+$/, '')}](${p})\n` + ta.value.slice(s); renderPrev(); } catch (e) { alert(e.message); } });
+    const commit = async () => { const o = read(); if (col === 'articles' && !o.slug) o.slug = o.title; state.data[col][index] = o; const msg = $('#fmsg', m); msg.classList.add('hidden'); try { await save(col); state.editing = null; render(); } catch (e) { msg.textContent = e.message; msg.classList.remove('hidden'); } };
+    $('#save', m).addEventListener('click', commit); f.addEventListener('submit', e => { e.preventDefault(); commit(); });
+    const cancel = () => { if (isNew) state.data[col].splice(index, 1); state.editing = null; render(); };
+    $('#cancel', m).addEventListener('click', cancel); $('#back', m).addEventListener('click', () => { if (confirm('Leave without saving?')) cancel(); });
+  }
+
+  async function library(onPick) {
+    const { items } = await api('/media');
+    const wrap = document.createElement('div'); wrap.className = 'modal';
+    wrap.innerHTML = `<div class="card"><div class="top" style="margin-bottom:12px"><div><h1 style="font-size:20px">Media</h1><p>Pick an image already on the site.</p></div><button class="btn sm" data-close>Close</button></div><div class="media">${items.map(i => `<button type="button" data-pick="${esc(i.path)}"><img src="${esc(i.path)}" alt="" loading="lazy"><small>${esc(i.path.split('/').pop())}</small></button>`).join('') || '<p class="hint">No images yet — upload one from the form.</p>'}</div></div>`;
+    document.body.appendChild(wrap);
+    wrap.addEventListener('click', e => { const p = e.target.closest('[data-pick]'); if (p) { onPick(p.dataset.pick); wrap.remove(); } if (e.target.closest('[data-close]') || e.target === wrap) wrap.remove(); });
+  }
+
+  async function media(m) {
+    const { items } = await api('/media');
+    m.innerHTML = `<div class="top"><div><h1>Media</h1><p>Images used across the site. Upload here, then pick them from any form.</p></div><label class="btn primary">${I.plus} Upload image<input type="file" accept="image/*" multiple id="mup" hidden></label></div>
+      <div class="media">${items.map(i => `<button type="button" data-copy="${esc(i.path)}" title="Click to copy the path"><img src="${esc(i.path)}" alt="" loading="lazy"><small>${esc(i.path.split('/').pop())} · ${Math.round(i.size / 1024)} KB</small></button>`).join('')}</div>`;
+    $$('[data-copy]', m).forEach(b => b.addEventListener('click', () => { navigator.clipboard && navigator.clipboard.writeText(b.dataset.copy); toast('Path copied: ' + b.dataset.copy); }));
+    $('#mup', m).addEventListener('change', async e => { for (const file of e.target.files) { const dataUrl = await new Promise(res => { const r = new FileReader(); r.onload = () => res(r.result); r.readAsDataURL(file); }); try { await api('/upload', { method: 'POST', body: JSON.stringify({ name: file.name, dataUrl }) }); } catch (err) { alert(err.message); } } toast('Uploaded'); media(m); });
+  }
+
+  async function settings(m) {
+    m.innerHTML = `<div class="top"><div><h1>Settings</h1><p>Where the site lives and how a publish reaches it.</p></div></div>
+      <form class="card" id="sf"><div class="form">
+        <div class="field wide"><label>Live site URL</label><input class="input" name="siteUrl" value="${esc(state.info.siteUrl || '')}" placeholder="https://www.verifyu.in"><small>Shown as a link after publishing.</small></div>
+        <div class="field wide"><label>Deploy command (optional)</label><input class="input" name="deployCommand" placeholder="e.g. rsync -az --delete dist/ user@server:/var/www/verifyu/"><small>Runs after every successful build, from the project folder. Leave empty if you upload the <code>dist</code> folder yourself. ${state.info.deployConfigured ? '<b>A deploy command is set.</b>' : ''}</small></div>
+        <div class="field"><label>New admin password</label><input class="input" name="newPassword" type="password" autocomplete="new-password" placeholder="Leave empty to keep the current one"></div>
+      </div><div id="smsg" class="msg hidden" style="margin-top:14px"></div>
+      <div class="bar"><button class="btn primary" type="submit">Save settings</button></div></form>`;
+    $('#sf', m).addEventListener('submit', async e => { e.preventDefault(); const f = e.target; const msg = $('#smsg', m); try { await api('/settings', { method: 'PUT', body: JSON.stringify({ siteUrl: f.siteUrl.value, deployCommand: f.deployCommand.value, newPassword: f.newPassword.value }) }); state.info = await api('/state'); msg.className = 'msg ok'; msg.textContent = 'Saved.'; f.newPassword.value = ''; } catch (err) { msg.className = 'msg err'; msg.textContent = err.message; } });
+  }
+
+  async function publish(m) {
+    m.innerHTML = `<div class="top"><div><h1>Publish changes</h1><p>Rebuilds every page from your saved content${state.info.deployConfigured ? ' and runs your deploy command' : ''}. Takes a few seconds.</p></div><button class="btn teal" id="go">Publish now</button></div>
+      <div class="card"><div class="log" id="plog">Press “Publish now” to start.</div><div id="pafter" style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap"></div></div>`;
+    $('#go', m).addEventListener('click', async () => {
+      const btn = $('#go', m), log = $('#plog', m), after = $('#pafter', m); btn.disabled = true; log.textContent = 'Building…'; after.innerHTML = '';
+      try { const r = await api('/publish', { method: 'POST' }); log.textContent = r.log + `\n\nFinished in ${(r.ms / 1000).toFixed(1)} s.`; state.info = await api('/state');
+        after.innerHTML = `<a class="btn" href="${esc(state.info.previewUrl || '/')}" target="_blank">Open preview</a>${state.info.siteUrl ? `<a class="btn" href="${esc(state.info.siteUrl)}" target="_blank">Open live site</a>` : ''}`; toast(r.deployed ? 'Published and deployed' : 'Site rebuilt');
+      } catch (e) { log.textContent = 'Publish failed: ' + e.message; }
+      btn.disabled = false;
+    });
+  }
+  $('#publishBtn').addEventListener('click', () => { if (state.editing && !confirm('Discard the changes in the open form?')) return; state.editing = null; state.view = 'publish'; render(); });
+
+  boot().catch(e => { document.body.innerHTML = `<div class="auth"><div class="auth-card"><h1>Cannot reach the admin server</h1><p>${esc(e.message)}</p></div></div>`; });
+})();
+</script>
+</body>
+</html>

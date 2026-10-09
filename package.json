@@ -1,0 +1,11 @@
+{
+  "name": "verifyu-website",
+  "private": true,
+  "type": "module",
+  "description": "VerifyU website — static build (build.mjs) with a content admin (admin/server.mjs).",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "build": "node build.mjs",
+    "admin": "node admin/server.mjs"
+  }
+}
