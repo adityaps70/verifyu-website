@@ -5,12 +5,16 @@ ErrorDocument 404 /404/index.html
 
 <IfModule mod_rewrite.c>
 RewriteEngine On
-# Always HTTPS
+# Always HTTPS, one host (www → bare domain)
 RewriteCond %{HTTPS} !=on
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE]
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301,NE]
 # Old WordPress / store-listing URLs → new pages (keep the app-store links working)
-RewriteRule ^privacy-policy/?$ /legal/privacy [R=301,L]
-RewriteRule ^terms(\.php)?/?$ /legal/terms [R=301,L]
+# Google Play + App Store: /privacy-policy/ ; App Store description: /privacypolicy.php and /terms.php
+RewriteRule ^privacy-?policy(\.php)?/?$ /legal/privacy [R=301,L,NC]
+RewriteRule ^terms(-conditions)?(\.php)?/?$ /legal/terms [R=301,L,NC]
+RewriteRule ^default\.php$ / [R=301,L]
 RewriteRule ^legal/?$ /legal/terms [R=301,L]
 RewriteRule ^impact/?$ /press [R=301,L]
 RewriteRule ^volunteer/?$ /safety-champions [R=301,L]
