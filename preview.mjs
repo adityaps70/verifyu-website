@@ -24,7 +24,10 @@ export function relativeBuild(out = join(ROOT, 'preview'), { pages = false } = {
     };
     html = html.replace(/(href|src|poster)="(\/[^"]*)"/g, (m, a, v) => v.startsWith('//') ? m : `${a}="${rel(v)}"`);
     html = html.replace(/content="0;url=(\/[^"]*)"/g, (m, v) => `content="0;url=${rel(v)}"`);
-    html = html.replace(/<link rel="canonical"[^>]*>/, '');
+    // GitHub Pages is a preview copy of the live site: keep the canonical pointing at the live domain and ask search
+    // engines not to index the copy. Plain previews just drop the canonical.
+    if (pages) html = html.replace(/<link rel="canonical"([^>]*)>/, '<link rel="canonical"$1><meta name="robots" content="noindex">');
+    else html = html.replace(/<link rel="canonical"[^>]*>/, '');
     writeFileSync(p, html);
   }
   let css = readFileSync(join(out, 'site.css'), 'utf8'); css = css.replace(/url\(\/(fonts|images)\//g, 'url($1/'); writeFileSync(join(out, 'site.css'), css);
