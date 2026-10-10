@@ -3,7 +3,7 @@ import { articles as contentArticles } from './content.mjs';
 const HAS_BLOG = contentArticles().length > 0;
 export const SITE = {
   name: 'VerifyU',
-  url: 'https://verifyu-reimagined.seaandshore.chatgpt.site',
+  url: 'https://verifyu.in',
   entity: 'Beaufort IT Solutions Pvt. Ltd.',
   email: 'info@beaufortit.com',
   whatsapp: '+91 82990 44462',
