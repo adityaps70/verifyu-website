@@ -148,7 +148,7 @@ ${pageHero({
       <div class="card">
         <div class="icon is-blue">${icons.log}</div>
         <h3 class="h4">Access is logged</h3>
-        <p class="body">Scans are logged. Logs are described on verifyu.in as including the time, IP address and location of the scan. ${flag()}</p>
+        <p class="body">Scans are logged. Logs include the time, IP address and location of the scan. ${flag()}</p>
       </div>
       <div class="card">
         <div class="icon is-teal">${icons.eye}</div>

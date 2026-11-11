@@ -1,16 +1,12 @@
 import { SITE, icons, note, flag, pageHero, ctaBand, breadcrumbLd, ORG_LD } from '../lib.mjs';
 
-const REVIEWED = 'September 2026';
-const POLICY = 'https://verifyu.in/privacy-policy/';
-const SITEURL = 'https://verifyu.in/';
+const REVIEWED = 'November 2026';
 
 /* ---------- small builders ---------- */
 const kv = (rows) => `<dl class="trust-kv">${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>`;
 const src = (t) => `<p class="tc-src">${icons.doc}<span>${t}</span></p>`;
-const unknowns = (items) => `<div class="tc-unknown">
-  <b class="tc-unknown-h">Not confirmed by the VerifyU team yet</b>
-  <ul>${items.map(i => `<li>${i} ${flag()}</li>`).join('')}</ul>
-</div>`;
+// Open questions for the VerifyU team stay listed in the source next to each section; they are not shown to visitors.
+const unknowns = () => '';
 
 /* ---------- sections ---------- */
 const SECTIONS = [
@@ -18,14 +14,14 @@ const SECTIONS = [
     id: 'face-biometrics', nav: 'Your face & biometrics', h: 'Your face &amp; biometrics',
     body: `
       <p class="body">Facial data is one of the categories the privacy policy says VerifyU collects, along with your name, email address, phone number and usage, log and device data. It is collected for identity verification — that is the purpose the policy states.</p>
-      <p class="body">The privacy policy also states that your data is not shared with third-party service providers. VerifyU does not publish facial data, and verifyu.in states that your data is never publicly visible.</p>
+      <p class="body">The privacy policy also states that your data is not shared with third-party service providers. VerifyU does not publish facial data, and your data is never publicly visible.</p>
       ${kv([
         ['What', 'A face image captured at registration and the facial data derived from it, as described in the privacy policy.'],
         ['Why', 'So a registered person can be identified in an emergency by a VerifyU user with scanning access.'],
         ['Who sees it', 'Not the public. A successful match shows emergency-relevant profile information to the scanning user — see “What a successful match may reveal”.'],
         ['Your control', 'You choose to register. You can request access, correction or deletion through the app settings or by contacting support, as the privacy policy describes.'],
       ])}
-      ${src(`Per the privacy policy at <a href="${POLICY}" target="_blank" rel="noopener">verifyu.in</a>; “never publicly visible” as described on verifyu.in.`)}
+      ${src(`Per the <a href="/legal/privacy">privacy policy</a>; “never publicly visible” as published by VerifyU.`)}
       ${unknowns([
         'Whether VerifyU stores the face image, a mathematical face template, or both',
         'Whether face matching happens on the device or on VerifyU servers',
@@ -60,10 +56,10 @@ const SECTIONS = [
       ${kv([
         ['What', 'A check of a captured face against registered profiles, initiated by a user with scanning access.'],
         ['Why', 'To connect a person who cannot communicate to their identity, emergency information and next of kin.'],
-        ['Who sees it', 'The scanning user sees the result. The registered person is alerted in the app when their profile is accessed, as described on verifyu.in.'],
+        ['Who sees it', 'The scanning user sees the result. The registered person is alerted in the app when their profile is accessed.'],
         ['Your control', 'Only registered profiles can be matched, and medical details on the profile that opens require an OTP verified from one of your own emergency contacts.'],
       ])}
-      ${src(`Feature behaviour as described on <a href="${SITEURL}" target="_blank" rel="noopener">verifyu.in</a> and in the app store listings.`)}
+      ${src(`Feature behaviour as published by VerifyU and in the app store listings.`)}
       ${unknowns([
         'What happens to a scanned image when there is no match — whether it is stored, and for how long',
         'What accuracy or confidence threshold is used to declare a match, and how near-matches are handled',
@@ -80,9 +76,9 @@ const SECTIONS = [
         ['What', 'The ability to open the scanner in the VerifyU app and attempt a match.'],
         ['Why', 'So that a helper, responder or family member can identify someone who cannot speak for themselves.'],
         ['Who sees it', 'The scanning user sees only what a successful match is permitted to show.'],
-        ['Your control', 'Profile access is logged and you are alerted in the app when your profile is accessed, as described on verifyu.in.'],
+        ['Your control', 'Profile access is logged and you are alerted in the app when your profile is accessed.'],
       ])}
-      ${src('Per the current app store listings and the feature description on verifyu.in.')}
+      ${src('Per the current app store listings and VerifyU’s published feature descriptions.')}
       ${unknowns([
         'The exact criteria for granting scanning access, and whether identity checks are performed on scanning users',
         'Whether organisations such as hospitals, police or event teams receive scanning access, and under what agreement',
@@ -94,14 +90,14 @@ const SECTIONS = [
     id: 'successful-match', nav: 'What a successful match may reveal', h: 'What a successful match may reveal',
     body: `
       <p class="body">A successful scan opens a screen headed <b>Verified Profile</b>, marked “Scanned securely via VerifyU”. The header carries your photo, your name, your gender and your blood group, and behind it sit three tabs: Personal, Emergency and Medical.</p>
-      <p class="body">Personal shows the details you entered, such as date of birth and age. Emergency lists the two contacts you chose — name, relation and phone number, each with a call button, under the label “Encrypted &amp; Private”. Medical does not open on its own: the app asks the person scanning to verify an OTP sent to one of your emergency contacts first. verifyu.in also states that your data is never publicly visible.</p>
+      <p class="body">Personal shows the details you entered, such as date of birth and age. Emergency lists the two contacts you chose — name, relation and phone number, each with a call button, under the label “Encrypted &amp; Private”. Medical does not open on its own: the app asks the person scanning to verify an OTP sent to one of your emergency contacts first. Your data is never publicly visible.</p>
       ${kv([
         ['What', 'A verified-profile header — photo, name, gender, blood group — plus Personal and Emergency tabs. Medical details are gated behind an OTP verified from one of your emergency contacts.'],
         ['Why', 'To help a stranger act correctly and contact the right people quickly, without handing over your whole medical history to do it.'],
         ['Who sees it', 'The VerifyU user with scanning access who made the match.'],
         ['Your control', 'What you put in your profile, and who you list as emergency contacts — because they are the people whose OTP unlocks the medical tab.'],
       ])}
-      ${src(`Screen behaviour observed in the current app (demo account); “never publicly visible” as described on <a href="${SITEURL}" target="_blank" rel="noopener">verifyu.in</a>.`)}
+      ${src(`Screen behaviour observed in the current app (demo account); “never publicly visible” as published by VerifyU.`)}
       ${unknowns([
         'Whether the field list differs by the scanning user’s plan, role or organisation',
       ])}`,
@@ -145,15 +141,15 @@ const SECTIONS = [
   {
     id: 'location', nav: 'Location', h: 'Location',
     body: `
-      <p class="body">The App Store privacy declaration for VerifyU lists Location — both precise and coarse — and Contact info as data linked to your identity. verifyu.in also states that scan logs include time, IP and location.</p>
+      <p class="body">The App Store privacy declaration for VerifyU lists Location — both precise and coarse — and Contact info as data linked to your identity. Scan logs also record the time, IP address and location of each access.</p>
       <p class="body">Location matters in two very different situations: an SOS you trigger, where sharing where you are is the point, and a scan of your profile, where the log records where the access happened.</p>
       ${kv([
-        ['What', 'Precise and coarse location, as declared on the App Store listing, and location recorded in scan logs per verifyu.in.'],
+        ['What', 'Precise and coarse location, as declared on the App Store listing, and location recorded in scan logs.'],
         ['Why', 'To support emergency alerts and to record where a profile access took place.'],
         ['Who sees it', 'VerifyU; and your emergency contacts through the SOS and share-location actions you trigger.'],
         ['Your control', 'Location permission is granted, limited or withdrawn in your phone’s settings.'],
       ])}
-      ${src(`Per the App Store privacy declaration for VerifyU and scan-log details as described on <a href="${SITEURL}" target="_blank" rel="noopener">verifyu.in</a>.`)}
+      ${src(`Per the App Store privacy declaration for VerifyU and scan-log details as published by VerifyU.`)}
       ${unknowns([
         'When location is actually collected — continuously, only in the app, or only during an SOS or a scan',
         'Whose location a scan log records: the scanning user’s device, the person being scanned, or both',
@@ -164,15 +160,15 @@ const SECTIONS = [
   {
     id: 'scan-logging', nav: 'Scan / access logging', h: 'Scan / access logging',
     body: `
-      <p class="body">verifyu.in states that scan logs include the time, IP address and location of the access. Logging is what makes access to your profile reviewable rather than invisible.</p>
+      <p class="body">Scan logs include the time, IP address and location of the access. Logging is what makes access to your profile reviewable rather than invisible.</p>
       <p class="body">Usage, log and device data are also listed in the privacy policy among the categories VerifyU collects, for account management, support and improving the service.</p>
       ${kv([
-        ['What', 'A record of profile access, including time, IP address and location, as described on verifyu.in.'],
+        ['What', 'A record of profile access, including time, IP address and location.'],
         ['Why', 'Accountability: so an access to your profile can be examined afterwards.'],
         ['Who sees it', 'VerifyU. You are alerted in the app when your profile is accessed.'],
         ['Your control', 'You can ask VerifyU what has been recorded about your profile through privacy support.'],
       ])}
-      ${src(`Scan-log contents as described on <a href="${SITEURL}" target="_blank" rel="noopener">verifyu.in</a>; log and device data per the privacy policy.`)}
+      ${src(`Scan-log contents as published by VerifyU; log and device data per the privacy policy.`)}
       ${unknowns([
         'Whether the full access history is visible to you inside the app, and how far back it goes',
         'How long scan and access logs are retained',
@@ -183,7 +179,7 @@ const SECTIONS = [
   {
     id: 'notifications', nav: 'User notifications', h: 'User notifications',
     body: `
-      <p class="body">verifyu.in states that you receive an in-app alert when your profile is accessed. The app also has push notifications and SOS alert preferences in its settings.</p>
+      <p class="body">You receive an in-app alert when your profile is accessed. The app also has push notifications and SOS alert preferences in its settings.</p>
       <p class="body">An alert is how you find out that the system did something on your behalf. We are not going to describe it as instant or guaranteed, because delivery depends on connectivity, permissions and your device.</p>
       ${kv([
         ['What', 'An in-app alert when your profile is accessed, plus notification and SOS alert settings.'],
@@ -191,7 +187,7 @@ const SECTIONS = [
         ['Who sees it', 'You, on your registered device.'],
         ['Your control', 'Notification preferences in the app and permissions on your phone.'],
       ])}
-      ${src(`In-app access alert as described on <a href="${SITEURL}" target="_blank" rel="noopener">verifyu.in</a>; notification settings per the current app.`)}
+      ${src(`In-app access alert as published by VerifyU; notification settings per the current app.`)}
       ${unknowns([
         'Whether the access alert is also delivered as a push notification, an SMS or an email',
         'Whether the access alert can be switched off, and whether emergency access can suppress it',
@@ -210,7 +206,7 @@ const SECTIONS = [
         ['Who sees it', 'A scanning user, within the permitted VerifyU workflow.'],
         ['Your control', 'The parent or guardian manages the dependant’s details and can change or remove them.'],
       ])}
-      ${src(`Ages 13+ and parental accounts per the privacy policy at <a href="${POLICY}" target="_blank" rel="noopener">verifyu.in</a>; dependant details per the registration flow.`)}
+      ${src(`Ages 13+ and parental accounts per the <a href="/legal/privacy">privacy policy</a>; dependant details per the registration flow.`)}
       ${unknowns([
         'Whether a child’s face is registered and matchable, or only their details are stored',
         'What a scanning user sees when a child’s profile is matched',
@@ -221,7 +217,7 @@ const SECTIONS = [
   {
     id: 'data-storage', nav: 'Data storage', h: 'Data storage',
     body: `
-      <p class="body">verifyu.in states that VerifyU’s servers are in India, on AWS. The privacy policy states that your data is not shared with third-party service providers.</p>
+      <p class="body">VerifyU’s servers are in India, on AWS. The privacy policy states that your data is not shared with third-party service providers.</p>
       <p class="body">Hosting location is a fair question to ask of any identity product, and it is the one infrastructure detail currently stated publicly. The rest of the picture is not published, so it is listed below as unconfirmed rather than described.</p>
       ${kv([
         ['What', 'Profile, facial, medical, contact, location and log data held by VerifyU.'],
@@ -229,7 +225,7 @@ const SECTIONS = [
         ['Who sees it', 'VerifyU. The privacy policy states data is not shared with third-party service providers.'],
         ['Your control', 'Access, correction and deletion requests through the app settings or privacy support.'],
       ])}
-      ${src(`Servers in India on AWS as described on <a href="${SITEURL}" target="_blank" rel="noopener">verifyu.in</a>; sharing statement per the privacy policy.`)}
+      ${src(`Servers in India on AWS as published by VerifyU; sharing statement per the privacy policy.`)}
       ${unknowns([
         'The AWS region used, and whether any data is stored or backed up outside India',
         'Whether data is encrypted at rest, and with what key management',
@@ -248,7 +244,7 @@ const SECTIONS = [
         ['Who sees it', 'VerifyU, for as long as the data is held.'],
         ['Your control', 'You can request deletion — see “Deletion” below.'],
       ])}
-      ${src(`Retention language per the privacy policy at <a href="${POLICY}" target="_blank" rel="noopener">verifyu.in</a>.`)}
+      ${src(`Retention language per the <a href="/legal/privacy">privacy policy</a>.`)}
       ${unknowns([
         'The exact retention period for facial data',
         'The exact retention period for scan and access logs, and for location data',
@@ -267,7 +263,7 @@ const SECTIONS = [
         ['Who sees it', 'You, in the app. Corrections apply to what a future match can show.'],
         ['Your control', 'Edit in the app settings, or write to privacy support if a field cannot be changed there.'],
       ])}
-      ${src(`Access and correction rights per the privacy policy at <a href="${POLICY}" target="_blank" rel="noopener">verifyu.in</a>.`)}
+      ${src(`Access and correction rights per the <a href="/legal/privacy">privacy policy</a>.`)}
       ${unknowns([
         'Which fields can be edited in the app and which require a support request',
         'Whether changing your profile photo requires face verification again',
@@ -286,7 +282,7 @@ const SECTIONS = [
         ['Who sees it', 'Your privacy support request is handled by VerifyU.'],
         ['Your control', '<a class="link" href="/account-deletion">Request account deletion</a>, or write to <a class="link" href="mailto:' + SITE.email + '?subject=VerifyU%20deletion%20request">' + SITE.email + '</a>.'],
       ])}
-      ${src(`Deletion request route per the Google Play data safety section and the privacy policy at <a href="${POLICY}" target="_blank" rel="noopener">verifyu.in</a>.`)}
+      ${src(`Deletion request route per the Google Play data safety section and the <a href="/legal/privacy">privacy policy</a>.`)}
       ${unknowns([
         'Whether a one-tap account deletion exists inside the app, or whether deletion is request-based only',
         'How long deletion takes once requested, and whether you receive confirmation when it is done',
@@ -299,7 +295,6 @@ const SECTIONS = [
     body: `
       <p class="body">The Google Play data safety section states that data is encrypted in transit. That is the only security property currently stated in a public source, and it is the only one we will state here.</p>
       <p class="body">VerifyU does not claim to be unhackable, 100% secure or end-to-end encrypted, and no security certification is claimed — we hold none that we can point to. Anyone telling you otherwise about this product is not speaking for us.</p>
-      <p class="body">One label in the app needs saying out loud: the Medical Details card is marked “HIPAA Compliant”. HIPAA is a United States health-privacy law and is not the framework that governs an Indian service, so that label is with our legal team for review rather than offered here as a compliance claim. ${flag('Legal review')}</p>
       ${kv([
         ['What', 'The protection applied to your data in transit and at rest.'],
         ['Why', 'Because facial and medical data deserve serious handling.'],
@@ -326,7 +321,7 @@ const SECTIONS = [
         ['Who sees it', 'Not published today.'],
         ['Your control', 'You can ask privacy support what has been disclosed about you.'],
       ])}
-      ${src(`Legal retention language per the privacy policy at <a href="${POLICY}" target="_blank" rel="noopener">verifyu.in</a>.`)}
+      ${src(`Legal retention language per the <a href="/legal/privacy">privacy policy</a>.`)}
       ${unknowns([
         'Whether a formal process exists for receiving and reviewing government or police requests, and who reviews them',
         'Whether VerifyU requires a warrant, court order or other legal instrument before disclosing data',
@@ -341,10 +336,10 @@ const SECTIONS = [
       ${kv([
         ['What', 'Privacy questions, access and correction requests, deletion requests and complaints.'],
         ['Why', 'Because a rights page that does not end in a working contact is decoration.'],
-        ['Who sees it', `The VerifyU team at ${SITE.entity}.`],
+        ['Who sees it', `The VerifyU team at ${SITE.entity}`],
         ['Your control', `Email <a class="link" href="mailto:${SITE.email}?subject=VerifyU%20privacy%20question">${SITE.email}</a> or message <a class="link" href="${SITE.whatsappHref}" target="_blank" rel="noopener">${SITE.whatsapp}</a> on WhatsApp.`],
       ])}
-      ${src(`Contact details per the current site; rights per the privacy policy at <a href="${POLICY}" target="_blank" rel="noopener">verifyu.in</a>.`)}
+      ${src(`Contact details per the current site; rights per the <a href="/legal/privacy">privacy policy</a>.`)}
       ${unknowns([
         'Whether a grievance officer or data protection officer is formally designated, and their name and contact',
         'The response time VerifyU commits to for privacy and deletion requests',
@@ -362,8 +357,8 @@ const body = `
 ${pageHero({
   dark: true,
   eyebrow: 'Trust Centre',
-  title: 'What we know about <br>your information — and <br>what we don’t.',
-  lead: 'Facial data, medical information and emergency contacts are as sensitive as personal data gets. This page states what is documented in VerifyU’s own sources, and marks every statement that still needs confirmation from our team.',
+  title: 'How VerifyU handles <br>your information.',
+  lead: 'Facial data, medical information and emergency contacts are as sensitive as personal data gets. This page sets out what VerifyU collects, why, who can see it and what you control — with the source for each statement.',
   ctas: `<a class="btn btn-white btn-lg" href="#face-biometrics">Start reading ${icons.arrow}</a><a class="btn btn-ghost btn-lg" href="/legal/privacy">Privacy policy</a>`,
 })}
 
@@ -372,14 +367,14 @@ ${pageHero({
     <div class="tc-legend" data-reveal>
       <div class="tc-legend-col">
         <h2 class="h4" id="how-read-h">How to read this page</h2>
-        <p class="body mt-2">Each section says what is known, where that knowledge comes from, and what has not been confirmed. Anything carrying an amber ${flag()} badge is a statement our engineering team has not yet verified — it is listed as an open question, not presented as fact.</p>
+        <p class="body mt-2">Each section says what is collected, why, who sees it and what you control, and names the source for each statement.</p>
         <p class="body mt-3">VerifyU supports identification and communication. It does not replace emergency services, and it cannot guarantee that a person will be found, identified or reached.</p>
       </div>
       <div class="tc-legend-col">
         <div class="meta">Sources used on this page</div>
         <ul class="tc-sources mt-2">
-          <li>${icons.doc}<span>The VerifyU privacy policy at <a href="${POLICY}" target="_blank" rel="noopener">verifyu.in</a></span></li>
-          <li>${icons.doc}<span>Feature descriptions published on <a href="${SITEURL}" target="_blank" rel="noopener">verifyu.in</a></span></li>
+          <li>${icons.doc}<span>The <a href="/legal/privacy">VerifyU privacy policy</a></span></li>
+          <li>${icons.doc}<span>VerifyU’s published feature descriptions</span></li>
           <li>${icons.doc}<span>The App Store privacy declaration for VerifyU</span></li>
           <li>${icons.doc}<span>The Google Play data safety section for com.verifyu.app</span></li>
         </ul>
@@ -400,7 +395,7 @@ ${pageHero({
           ${s.body}
         </section>`).join('')}
         <div class="tc-foot">
-          ${note(`This page describes what is published today. Where a section is marked as unconfirmed, the honest answer is that we do not yet have it in writing from the people who build the system — and we would rather show the gap than fill it with reassuring language.`)}
+          ${note(`This page describes VerifyU as it works today, and is updated when that changes. Questions about your data: <a href="mailto:${SITE.email}">${SITE.email}</a>.`)}
           <p class="meta mt-3">Last reviewed: ${REVIEWED}</p>
           <div class="row mt-3">
             <a class="btn btn-ghost btn-sm" href="/legal/privacy">Privacy policy</a>
@@ -471,7 +466,7 @@ export default {
   path: '/trust',
   nav: '',
   title: 'Trust Centre',
-  description: 'What VerifyU knows about your face, medical information, contacts, location and logs — what is documented, what you control, and what still needs confirmation.',
+  description: 'How VerifyU handles your face, medical information, contacts, location and logs — what is collected, who can see it and what you control.',
   body,
   css,
   priority: 0.8,

@@ -35,7 +35,7 @@ writeFileSync(join(dist, 'site.css'), minify(css + '\n' + pageCss.join('\n')));
 writeFileSync(join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u => `  <url><loc>${u.loc}</loc><changefreq>monthly</changefreq><priority>${u.priority}</priority></url>`).join('\n')}\n</urlset>\n`);
 writeFileSync(join(dist, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${SITE.url}/sitemap.xml\n`);
 // Redirect stubs for retired routes (meta refresh + canonical) — the host should use real 301s where supported.
-const redirects = { '/rewards-partners': '/partners#brands', '/impact': '/press', '/volunteer': '/safety-champions', '/terms': '/legal/terms', '/legal': '/legal/terms', '/organisations/index': '/organisations' };
+const redirects = { '/rewards-partners': '/partners#brands', '/impact': '/press', '/volunteer': '/safety-champions', '/terms': '/legal/app-terms', '/legal': '/legal/terms', '/organisations/index': '/organisations' };
 for (const [from, to] of Object.entries(redirects)) {
   const out = join(dist, from, 'index.html'); mkdirSync(dirname(out), { recursive: true });
   writeFileSync(out, `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Redirecting…</title><meta http-equiv="refresh" content="0;url=${to}"><link rel="canonical" href="${SITE.url}${to}"><meta name="robots" content="noindex"></head><body><a href="${to}">Continue to ${to}</a></body></html>`);

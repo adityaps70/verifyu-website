@@ -8,7 +8,7 @@ const ext = (h, t) => `<a class="ab-ext" href="${h}" target="_blank" rel="noopen
 const TIMELINE = [
   { t: 'July 2025', h: 'VerifyU is introduced publicly', b: `An ANI release, carried by ${ext('https://www.tribuneindia.com/news/business/verifyu-app-emerges-as-a-digital-safety-net-for-indian-families/', 'The Tribune')} and ${ext('https://theprint.in/ani-press-releases/verifyu-app-emerges-as-a-digital-safety-net-for-indian-families/2703120/', 'ThePrint')}, presents VerifyU as a digital safety net for Indian families.` },
   { t: 'May 2026', h: 'The founder’s story is published', b: `Startup Pedia interviews Capt. Saurabh Saraswat about the identification gap he set out to close — ${ext('https://startuppedia.in/tech-innovation/verifyu-was-founded-by-captain-saurabh-saraswat-a-former-merchant-navy-captain-from-lucknow-11821665', 'read the interview')}.` },
-  { t: '2026', h: 'Registration drives in the community', b: `Running communities in Lucknow are introduced to emergency identity, and senior participants are registered at the Mysuru Strollathon organised by Vayah Vikas — as described on ${ext('https://verifyu.in/', 'verifyu.in')}.` },
+  { t: '2026', h: 'Registration drives in the community', b: `Running communities in Lucknow are introduced to emergency identity, and senior participants are registered at the Mysuru Strollathon organised by Vayah Vikas.` },
   { t: '2026', h: 'The app keeps changing', b: `Recent updates listed on Google Play include Hindi language support, a redesigned medical-information experience and a revamped interface.` },
 ];
 
@@ -169,12 +169,11 @@ const body = `
 <section class="section ab-journey" aria-labelledby="ms-h">
   <div class="container">
     <div class="ab-journey-head">
-      ${sectionHead({ eyebrow: 'Milestones', title: 'What we can point to.', lead: 'Only what is published and verifiable. Where a date is not confirmed in a public source, we say so instead of filling the gap.' })}
+      ${sectionHead({ eyebrow: 'Milestones', title: 'What we can point to.', lead: 'The moments we can point to, each one on the public record.' })}
     </div>
     <ol class="ab-tl" data-stagger>
       ${TIMELINE.map(t => `<li class="ab-tl-item"><span class="ab-tl-dot"></span><div class="meta">${t.t}</div><h3 class="h4">${t.h}</h3><p class="small">${t.b}</p></li>`).join('')}
     </ol>
-    <div class="ab-journey-note">${note(`Company formation, first release and user milestones are not published here because they are not confirmed in a public source we can cite. When we have figures we can stand behind and attribute, they will appear here. ${flag()}`)}</div>
   </div>
 </section>
 

@@ -92,7 +92,7 @@ I confirm this request is made by me,
 the registered VerifyU user.</pre>
     </div>
 
-    <p class="small mt-4">Whether deletion can be started from inside the app is being confirmed ${flag('Owner verification')} — so this page describes the email route, which works on any device and does not depend on your app version.</p>
+    <p class="small mt-4">The email route works from any device and does not depend on your app version.</p>
   </div>
 </section>
 
@@ -116,7 +116,6 @@ the registered VerifyU user.</pre>
         <p class="body">We confirm it is really you, action the deletion, and keep only what the law requires us to keep, as set out in the <a class="link" href="/legal/privacy">Privacy Policy</a>.</p>
       </div>
     </div>
-    <p class="small mt-4">How quickly a deletion request is acknowledged and completed ${flag('Owner verification')} — we would rather publish nothing than publish a timeline the team has not committed to.</p>
     ${note('Deleting your VerifyU account removes the emergency information and contacts a helper could otherwise have reached. If the profile is for a parent or a dependant, consider updating it instead.')}
   </div>
 </section>

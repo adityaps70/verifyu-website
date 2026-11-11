@@ -47,7 +47,6 @@ ${pageHero({
         <div class="sc-who"><span class="meta">Who can join</span><p class="small">${t.who}</p></div>
       </article>`).join('')}
     </div>
-    <p class="small mt-4">How each champion type is listed, contacted and supported in the app is still being finalised with the VerifyU team. ${flag()}</p>
   </div>
 </section>
 
@@ -133,13 +132,13 @@ ${pageHero({
       <div class="card is-xl">
         <div class="icon">${icons.doc}</div>
         <h3 class="h4">Training</h3>
-        <p class="body mt-2">Champions are briefed on the registration steps, on what VerifyU can and cannot do, and on how to talk about emergency identity without overselling it. The format, length and materials of this briefing are being finalised. ${flag()}</p>
+        <p class="body mt-2">Champions are briefed on the registration steps, on what VerifyU can and cannot do, and on how to talk about emergency identity without overselling it.</p>
         <p class="body mt-2">Training is about explaining the app well. It is not first-aid, medical or emergency-response training, and it does not qualify you to act as a responder.</p>
       </div>
       <div class="card is-xl">
         <div class="icon">${icons.star}</div>
         <h3 class="h4">Recognition</h3>
-        <p class="body mt-2">Active champions may be recognised within the community and at VerifyU events. The specifics — badges, certificates, listings or any other form of recognition — are being confirmed and are not promised here. ${flag()}</p>
+        <p class="body mt-2">Active champions may be recognised within the community and at VerifyU events.</p>
         <p class="body mt-2">There is no payment, commission or incentive attached to the role, and none should be offered or accepted in VerifyU’s name.</p>
       </div>
     </div>

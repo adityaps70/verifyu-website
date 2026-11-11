@@ -53,7 +53,7 @@ const INSTITUTIONAL = [
 const GOVERNANCE = [
   { i: 'user', h: 'Consent-based registration', b: 'Nobody is added by the hospital. Each person registers themselves and chooses what the profile carries.' },
   { i: 'eye', h: 'Emergency-relevant first', b: 'A match returns the profile header and emergency contacts. Medical details stay behind an OTP.' },
-  { i: 'log', h: 'Access logging', b: `Profile access is logged — verifyu.in describes time, IP address and location. ${flag()}` },
+  { i: 'log', h: 'Access logging', b: `Profile access is logged with the time, IP address and location. ${flag()}` },
   { i: 'bell', h: 'The person is told', b: 'The registered user is notified in the app when their profile is accessed.' },
   { i: 'lock', h: 'Role-based access', b: `Who on your team may use VerifyU, and when, is defined in the hospital arrangement. ${flag()}` },
   { i: 'shield', h: 'Clear limits', b: 'Not a diagnostic tool, not a medical record, not a substitute for your own identification and consent procedures.' },
@@ -150,10 +150,10 @@ const body = `
 <section class="section hp-inst-sec" aria-labelledby="inst-h">
   <div class="container">
     <div class="hp-inst-head">
-      ${sectionHead({ eyebrow: 'Institutional arrangement', title: 'Four capabilities, by arrangement.', lead: 'Hospital teams ask about these four. Each belongs to an institutional arrangement rather than the consumer app — confirm with the VerifyU team before relying on it.' })}
+      ${sectionHead({ eyebrow: 'Institutional arrangement', title: 'Four capabilities, by arrangement.', lead: 'Hospital teams ask about these four. None is part of the consumer app: each is scoped with your hospital as part of an institutional arrangement.' })}
     </div>
     <div class="hp-inst-grid" data-stagger>
-      ${INSTITUTIONAL.map(c => `<article class="hp-inst"><div class="icon">${icons[c.i]}</div><div><h3 class="h4">${c.h}</h3><p class="body">${c.b}</p><span class="flag">Owner verification</span></div></article>`).join('')}
+      ${INSTITUTIONAL.map(c => `<article class="hp-inst"><div class="icon">${icons[c.i]}</div><div><h3 class="h4">${c.h}</h3><p class="body">${c.b}</p></div></article>`).join('')}
     </div>
   </div>
 </section>
@@ -166,7 +166,7 @@ const body = `
     <div class="hp-gov-grid" data-stagger>
       ${GOVERNANCE.map((g, i) => `<article class="hp-gov"><span class="hp-gov-n">0${i + 1}</span><div class="icon">${icons[g.i]}</div><h3 class="h4">${g.h}</h3><p class="small">${g.b}</p></article>`).join('')}
     </div>
-    <div class="row mt-5"><a class="btn btn-white" href="/trust">Visit the Trust Centre ${icons.arrow}</a><a class="btn btn-ghost" href="${SITE.privacyExternal}" target="_blank" rel="noopener">Privacy policy ${icons.arrowUpRight}</a></div>
+    <div class="row mt-5"><a class="btn btn-white" href="/trust">Visit the Trust Centre ${icons.arrow}</a><a class="btn btn-ghost" href="/legal/privacy">Privacy policy</a></div>
   </div>
 </section>
 

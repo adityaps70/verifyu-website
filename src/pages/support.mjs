@@ -89,7 +89,7 @@ const FAQ = [
     id: 'faq-photo-unclear', cat: 'face-verification',
     q: 'What if my profile photo is unclear?',
     a: `<p>An unclear photo makes matching harder, so it is worth replacing. A good photo is well lit, taken straight on, shows your whole face without a filter and has nothing covering your eyes or mouth.</p>
-      <p>You can update the photo from your profile in the app and complete verification again. ${flag('Owner verification')} — the exact screen for replacing a photo may differ by app version.</p>`,
+      <p>You can update the photo from your profile in the app and complete verification again. The exact screen may differ slightly between app versions.</p>`,
   },
 
   /* Emergency contacts */
@@ -102,7 +102,7 @@ const FAQ = [
   {
     id: 'faq-contacts-change', cat: 'emergency-contacts',
     q: 'Can I change my emergency contacts later?',
-    a: `<p>Yes — emergency contacts are part of your profile and are managed inside the app, so you can update names, relationships and numbers as your circumstances change. ${flag('Owner verification')} — the exact menu path for editing contacts needs confirmation against the current app version.</p>
+    a: `<p>Yes — emergency contacts are part of your profile and are managed inside the app, so you can update names, relationships and numbers as your circumstances change. The exact menu path may differ slightly between app versions.</p>
       <p>If you cannot find the option on your version, message us and we will point you to the right screen.</p>`,
   },
 
@@ -165,13 +165,13 @@ const FAQ = [
   {
     id: 'faq-coins-history', cat: 'coins',
     q: 'Where can I see my VerifyU Coins?',
-    a: `<p>Your balance is on the Step Counter screen — at the top and in the Coins tile — and in Settings beside Referral Rewards. It also appears at payment in Recharge &amp; Utilities, next to the Use Coins toggle. ${flag('Owner verification')} — whether the app has a separate coin history listing every credit, and where it sits, needs confirmation against the current app version.</p>
+    a: `<p>Your balance is on the Step Counter screen — at the top and in the Coins tile — and in Settings beside Referral Rewards. It also appears at payment in Recharge &amp; Utilities, next to the Use Coins toggle.</p>
       <p>If a day's coins look wrong, check first that your steps synced for that day.</p>`,
   },
   {
     id: 'faq-coins-expiry', cat: 'coins',
     q: 'Do VerifyU Coins expire?',
-    a: `<p>${flag('Owner verification')} — whether coins expire, and after how long, has not been confirmed and we will not guess. We will publish the rule here once it is confirmed by the VerifyU team.</p>
+    a: `<p>Any validity period or limit that applies to your coins is shown in the app, and the <a href="/legal/rewards-terms">rewards terms</a> explain how coins work. If a balance looks wrong, contact support with the date.</p>
       <p>What is certain: coins have no cash value, are not a currency, security or investment, and cannot be withdrawn as cash. They can be put towards eligible payments in Recharge &amp; Utilities, subject to availability and limits.</p>`,
   },
 
@@ -217,7 +217,7 @@ const FAQ = [
     id: 'faq-refund', cat: 'subscription',
     q: 'Can I get a refund?',
     a: `<p>Purchases made through the Apple App Store or Google Play are handled by those stores, so refunds follow Apple's and Google's refund policies and are requested through them.</p>
-      <p>For any other payment method, contact us with the transaction reference, the date and the amount and we will look into it. ${flag('Owner verification')} — VerifyU's own refund terms still need to be confirmed and published.</p>`,
+      <p>For any other payment method, contact us with the transaction reference, the date and the amount and we will look into it.</p>`,
   },
 
   /* Account */
@@ -225,7 +225,7 @@ const FAQ = [
     id: 'faq-account-details', cat: 'account',
     q: 'How do I change my mobile number or personal details?',
     a: `<p>Your name, photo, personal details, contacts and medical information are edited in your profile inside the app.</p>
-      <p>Changing the registered mobile number is different, because that number verifies your account. ${flag('Owner verification')} — whether the number can be changed in the app, and what proof is needed, needs confirmation. Until then, message us from your registered email with your registered number and we will tell you the current process.</p>`,
+      <p>Changing the registered mobile number is different, because that number verifies your account. To change it, message us from your registered email with your registered number and we will take you through the current process.</p>`,
   },
 
   /* Privacy */
@@ -327,7 +327,6 @@ ${pageHero({
       </div>
     </div>
     ${refNote}
-    <p class="small mt-3">Support hours and response times ${flag('Owner verification')} — these have not been confirmed, so we do not publish them yet.</p>
   </div>
 </section>
 

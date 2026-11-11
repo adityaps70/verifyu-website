@@ -1,15 +1,41 @@
+import { readFileSync, existsSync } from 'node:fs';
 import { SITE, icons, note, flag, pageHero, ctaBand, breadcrumbLd } from '../lib.mjs';
+
+/* The Privacy Policy and the App Terms & Conditions are VerifyU's own published texts, kept verbatim in
+   content/legal/*.html (copied from the original verifyu.in). They are split into sections at their headings
+   only so the on-page navigation works — the wording is never changed here. */
+const original = (name) => {
+  const f = new URL(`../../content/legal/${name}.html`, import.meta.url);
+  return existsSync(f) ? readFileSync(f, 'utf8').replace(/<!--[\s\S]*?-->/g, '').trim() : '';
+};
+const slug = (t) => t.replace(/<[^>]+>/g, '').toLowerCase().replace(/&[a-z]+;/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 48) || 'section';
+const plain = (t) => t.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+// Short label for the on-page navigation: drop clause numbers; long headings keep their first phrase.
+const navLabel = (h) => { const t = plain(h).replace(/^\d+[.)]\s*/, ''); return t.length <= 32 ? t : t.split(/[,:—–]/)[0].trim(); };
+function splitOriginal(html, overview = 'Overview') {
+  // Top-level headings: the highest heading level the document uses, or whole-paragraph bold lines as a fallback.
+  const level = ['h1', 'h2', 'h3', 'h4'].find(h => new RegExp(`<${h}[\\s>]`, 'i').test(html));
+  const re = level ? new RegExp(`<${level}[^>]*>([\\s\\S]*?)<\\/${level}>`, 'gi')
+                   : /<p[^>]*>\s*<(?:strong|b)>([\s\S]*?)<\/(?:strong|b)>\s*<\/p>/gi;
+  const out = []; const seen = new Set(); let last = 0; let m; let pre = '';
+  const push = (h, body) => { let id = slug(plain(h).replace(/^\d+[.)]\s*/, '')).replace(/^(\d)/, 's-$1'); while (seen.has(id)) id += '-2'; seen.add(id); out.push({ id, h, nav: navLabel(h), body }); };
+  const marks = [];
+  while ((m = re.exec(html))) marks.push({ start: m.index, end: re.lastIndex, h: m[1].trim() });
+  if (!marks.length) return [{ id: 'policy', h: overview, nav: overview, body: html }];
+  pre = html.slice(0, marks[0].start).trim();
+  if (plain(pre)) push(overview, pre);
+  marks.forEach((k, i) => push(k.h, html.slice(k.end, i + 1 < marks.length ? marks[i + 1].start : html.length).trim()));
+  return out;
+}
 
 /* Five legal pages, built from one shared shell so the layout, the "last updated"
    line and the on-page navigation stay identical across the set. */
 
-const UPDATED = 'Last updated: 13 September 2026';
+const UPDATED = 'Last updated: 11 November 2026';
 const APPLE_SUB = 'https://support.apple.com/118428';
 const GOOGLE_SUB = 'https://support.google.com/googleplay/answer/7018481';
-const PRIVACY_URL = SITE.privacyExternal;
-const TERMS_URL = 'https://www.verifyu.in/terms.php';
 
-const shell = ({ path, title, description, lead, intro, sections, status = '', priority = 0.5 }) => ({
+const shell = ({ path, title, description, lead, intro, sections, status = '', priority = 0.5, updated = UPDATED }) => ({
   path,
   nav: '',
   title,
@@ -27,9 +53,9 @@ ${pageHero({ eyebrow: 'Legal', title, lead })}
         ${sections.map(s => `<a href="#${s.id}">${s.nav || s.h}</a>`).join('')}
       </nav>
       <div class="prose lg-prose">
-        <p class="meta lg-updated">${UPDATED} ${flag('Owner verification')}</p>
+        ${updated ? `<p class="meta lg-updated">${updated}</p>` : ''}
         ${status}
-        <p class="lg-intro">${intro}</p>
+        ${intro ? `<p class="lg-intro">${intro}</p>` : ''}
         ${sections.map(s => `<h2 id="${s.id}">${s.h}</h2>${s.body}`).join('')}
       </div>
     </div>
@@ -59,9 +85,6 @@ const cssShared = `
 .lg-callout p + p{margin-top:10px}
 .lg-callout .btn{margin-top:14px}
 .lg-callout a.btn{text-decoration:none;color:#fff}
-.lg-draft{display:flex;gap:12px;align-items:flex-start;padding:16px 18px;border-radius:var(--r-md,16px);background:#FFF4E5;color:#6B3A00;font-size:14.5px;line-height:1.5;margin:0 0 20px}
-.lg-draft svg{flex:none;width:18px;height:18px;margin-top:2px}
-.lg-draft b{color:#5A3000}
 .lg-list{list-style:none;padding:0;margin:0}
 .lg-list > li{padding:18px 0;border-top:1px solid var(--line)}
 .lg-list > li:last-child{border-bottom:1px solid var(--line)}
@@ -82,93 +105,35 @@ const cssShared = `
 }
 `;
 
-const draft = (t) => `<div class="lg-draft">${icons.info}<span>${t}</span></div>`;
 
-/* ============================================================ (a) PRIVACY */
+/* ============================================================ (a) PRIVACY — VerifyU's published policy, verbatim */
+const PRIVACY = original('privacy-policy');
+if (!PRIVACY) throw new Error('content/legal/privacy-policy.html is missing — the Privacy Policy page needs the published text.');
 const privacy = shell({
   path: '/legal/privacy',
   title: 'Privacy Policy',
-  description: 'A plain summary of the published VerifyU privacy policy: what is collected, why, how long it is kept, your rights, and a link to the full policy.',
+  description: 'The VerifyU Privacy Policy: what information is collected, why it is collected, how it is used and protected, and the rights you have.',
   priority: 0.6,
-  lead: 'What VerifyU collects, why it is collected, and what you can ask for. This page summarises the published policy and links to it in full.',
-  intro: `${webIntro('a summary of the VerifyU privacy policy')} The published policy at verifyu.in remains the authoritative document — where this summary and the published policy differ, the published policy applies.`,
-  status: draft('<b>This is a summary, not a replacement.</b> Nothing on this page changes the published policy. It has been written to be accurate to the published text, with unresolved points marked for the VerifyU team rather than smoothed over.'),
-  sections: [
-    {
-      id: 'summary', h: 'Summary of the published policy', nav: 'Summary',
-      body: `
-      <h3>What is collected</h3>
-      <ul>
-        <li>Information you provide: your name, email address and phone number.</li>
-        <li>Facial data, collected for identity verification.</li>
-        <li>Usage, log, device and diagnostic information generated as you use the app.</li>
-      </ul>
-      <h3>Why it is collected</h3>
-      <ul>
-        <li>To create and manage your account.</li>
-        <li>To verify identity.</li>
-        <li>To provide support when you contact the team.</li>
-        <li>To improve the app.</li>
-      </ul>
-      <h3>Sharing</h3>
-      <p>The published policy states that data is not shared with third-party service providers. See the consistency review below — this statement needs to be reconciled with how the product necessarily operates. ${flag('Legal review')}</p>
-      <h3>How long it is kept</h3>
-      <p>Information is kept for as long as necessary for the purposes described in the policy, or for as long as required by law, and is then securely deleted or anonymised.</p>
-      <h3>Security</h3>
-      <p>The policy describes protective measures for the information held, and states plainly that no method of transmission or storage is completely secure. VerifyU makes no claim of perfect security, and this website makes none either.</p>
-      <h3>Children</h3>
-      <p>The app is intended for people aged 13 and over. Children under 13 are covered through a parent's or guardian's account rather than an account of their own.</p>
-      <h3>Your rights</h3>
-      <p>You can ask to access the information held about you, ask for it to be corrected, and ask for it to be deleted. Requests can be made through the settings in the app or by contacting the team. <a href="/account-deletion">How to request deletion</a>.</p>
-      <h3>Contact</h3>
-      <p>The published policy gives <a href="mailto:help@verifyu.in">help@verifyu.in</a>; this website and the app listings also use <a href="mailto:${SITE.email}">${SITE.email}</a>. Both addresses reach the VerifyU team. ${flag('Owner verification')}</p>`,
-    },
-    {
-      id: 'full', h: 'Read the full published Privacy Policy', nav: 'Full policy',
-      body: callout(`<p><b>The complete policy lives on the official VerifyU site.</b> Read it before relying on the summary above — it is the version that governs how your information is handled.</p>
-        <p><a class="btn btn-primary btn-sm" href="${PRIVACY_URL}" target="_blank" rel="noopener">Read the full published Privacy Policy ${icons.arrowUpRight}</a></p>`),
-    },
-    {
-      id: 'biometric', h: 'Biometric and facial data notice', nav: 'Biometric data',
-      body: `
-      <p><b>What is known today.</b> VerifyU collects facial data during registration and uses it for identity verification and for matching a face to a registered profile when someone with scanning access runs a check. Face verification is completed by you, in the app, as part of registration.</p>
-      <p><b>What is not yet published.</b> A formal biometric notice — covering the legal basis for processing facial data, how the facial template is stored and protected, how long it is retained, whether it is processed by any external service, and how consent is given and withdrawn — has not been drafted. ${flag('Legal review')}</p>
-      <p>Facial data is sensitive personal data. In the context of India's Digital Personal Data Protection Act, 2023, a dedicated, clearly written biometric notice is likely to be expected of a product like this. This section is a placeholder and must be replaced with text drafted by a qualified adviser before launch. ${flag('Legal review')}</p>`,
-    },
-    {
-      id: 'review', h: 'Consistency review (for the VerifyU team)', nav: 'Consistency review',
-      body: `
-      <p>These are differences found between the published privacy policy, the two app-store listings, press material and this website. They are listed here openly because they need resolving before launch, not because they are settled. Each one needs an owner decision.</p>
-      <ol class="lg-list">
-        <li><b>1 · Google Play Data Safety says "No data collected".</b> The app collects name, phone number, email, facial data and medical information. The Data Safety declaration should be rewritten to match what the app actually collects and why, including the sensitive categories. ${flag('Legal review')}<span class="lg-src">Sources: Google Play listing vs the app's own registration flow and privacy policy.</span></li>
-        <li><b>2 · "No third-party sharing" versus how the product necessarily works.</b> Sending an OTP requires an SMS provider; selling subscriptions through the stores means Apple and Google process payments; running the service requires cloud hosting (verifyu.in refers to AWS India). These are processors and should be disclosed as such, with a clear statement that they act on VerifyU's instructions. ${flag('Legal review')}<span class="lg-src">Sources: published privacy policy vs verifyu.in and the store listings.</span></li>
-        <li><b>3 · App Store privacy declaration is incomplete.</b> It lists Location and Contact Info, but not health or medical information and not biometric or facial data — both of which the app collects. ${flag('Legal review')}<span class="lg-src">Source: App Store listing, id6670164958.</span></li>
-        <li><b>4 · The developer name differs across sources.</b> "BEAUFORT IT SOLUTIONS PVT LTD" on Google Play, "Beaufort IT Solutions LLP" on the App Store and in the ANI release, and "Beaufort IT Solutions Pvt. Ltd." on the website. One legal entity name should be used everywhere, and the incorrect listings corrected. ${flag('Owner verification')}<span class="lg-src">Sources: Google Play, App Store, ANI release, verifyu.in.</span></li>
-        <li><b>5 · Two support addresses are in circulation.</b> help@verifyu.in appears in the store listings and the policy; ${SITE.email} is used on this website. Either publish both with a stated purpose for each, or consolidate on one. ${flag('Owner verification')}<span class="lg-src">Sources: store listings and published policy vs this website.</span></li>
-        <li><b>6 · The published policy carries no effective or last-updated date.</b> A dated version, with a short change history, makes the policy verifiable and is expected practice. ${flag('Legal review')}<span class="lg-src">Source: ${PRIVACY_URL}</span></li>
-        <li><b>7 · A biometric and facial data notice may be legally required.</b> Under the Digital Personal Data Protection Act, 2023, processing facial data warrants a specific notice and a clear consent record. This needs a qualified adviser, not a website draft. ${flag('Legal review')}<span class="lg-src">See the biometric section above.</span></li>
-        <li><b>8 · App-store description language needs aligning.</b> The App Store description still carries "deterrent against trafficking" style claims. The app descriptions should be brought in line with the language used on this website: VerifyU supports identification and communication, and does not promise prevention, rescue or a guaranteed outcome. ${flag('Owner verification')}<span class="lg-src">Source: App Store listing.</span></li>
-      </ol>
-      ${note('This section is written for the VerifyU team and its advisers. It is published rather than hidden because a privacy page that quietly papers over known gaps is worse than one that names them.')}`,
-    },
-  ],
+  lead: 'What VerifyU collects, why it is collected, and what you can ask for.',
+  updated: '',
+  intro: '',
+  sections: splitOriginal(PRIVACY),
 });
 
-/* ============================================================ (b) TERMS */
+/* ============================================================ (b) WEBSITE TERMS */
 const terms = shell({
   path: '/legal/terms',
   title: 'Terms of Use',
-  description: 'Terms for using the VerifyU website, plus a summary of the in-app Terms and Conditions: accounts, acceptable use, face verification and subscriptions.',
+  description: 'Terms for using the VerifyU website, with a link to the full Terms and Conditions for the VerifyU app.',
   priority: 0.6,
-  lead: 'The terms that apply to this website, and a plain summary of the terms that apply inside the VerifyU app.',
-  intro: `${webIntro('the terms that apply to this website')} The terms governing the app itself are shown in the app under Settings → Terms &amp; Conditions, and are published at verifyu.in.`,
-  status: draft('<b>Draft for legal review.</b> The website terms below are a plain baseline written for review by a qualified adviser. They have not been approved, and nothing here should be relied on as final until the VerifyU team confirms them.'),
+  lead: 'The terms that apply to this website. The VerifyU app has its own Terms &amp; Conditions.',
+  intro: `These terms apply to the VerifyU website. The terms for the app are shown in the app under Settings → Terms &amp; Conditions and are published in full on the <a href="/legal/app-terms">App Terms &amp; Conditions</a> page.`,
   sections: [
     {
       id: 'website', h: 'Using this website', nav: 'Using this website',
       body: `
-      <p>This website describes VerifyU and the company behind it, ${SITE.entity}. You may read it, link to it and share it. You may not use it to break the law, to interfere with how it works, or to collect information about other people from it.</p>
-      <p>The information here is published in good faith and kept as accurate as we can make it, but it describes a product that changes. Features, plans, prices and availability depend on your app version, your plan, the permissions you have granted and the terms shown in the app at the time. Where this website and the app disagree, the app and the in-app terms apply. ${flag('Legal review')}</p>`,
+      <p>This website describes VerifyU and the company behind it, ${SITE.entity} You may read it, link to it and share it. You may not use it to break the law, to interfere with how it works, or to collect information about other people from it.</p>
+      <p>The information here is published in good faith and kept as accurate as we can make it, but it describes a product that changes. Features, plans, prices and availability depend on your app version, your plan, the permissions you have granted and the terms shown in the app at the time. Where this website and the app disagree, the app and the in-app terms apply.</p>`,
     },
     {
       id: 'no-emergency', h: 'No emergency-service guarantee', nav: 'No emergency guarantee',
@@ -181,35 +146,38 @@ const terms = shell({
       id: 'ip', h: 'Intellectual property', nav: 'Intellectual property',
       body: `
       <p>The VerifyU name, logo, copy, design, illustrations and photographs on this website belong to ${SITE.entity} or are used with permission. You may quote short extracts with attribution and a link. You may not copy the site wholesale, reuse the brand, or present VerifyU material as your own.</p>
-      <p>Press and media may use the material on the <a href="/press">Press &amp; Impact</a> page for coverage of VerifyU. ${flag('Legal review')}</p>`,
+      <p>Press and media may use the material on the <a href="/press">Press &amp; Impact</a> page for coverage of VerifyU.</p>`,
     },
     {
       id: 'links', h: 'Links to other sites', nav: 'Links to other sites',
       body: `
-      <p>This website links to app stores, news coverage, the official verifyu.in site and support pages run by Apple and Google. Those sites are not under VerifyU's control, and their own terms and privacy policies apply when you visit them. A link is not an endorsement of everything a third party publishes.</p>`,
+      <p>This website links to app stores, news coverage and support pages run by Apple and Google. Those sites are not under VerifyU's control, and their own terms and privacy policies apply when you visit them. A link is not an endorsement of everything a third party publishes.</p>`,
     },
     {
       id: 'law', h: 'Governing law', nav: 'Governing law',
       body: `
-      <p>These website terms are intended to be governed by the laws of India, with the courts of India having jurisdiction. The specific state and city for jurisdiction, and the position for users outside India, need to be set by the VerifyU team's legal adviser. ${flag('Legal review')}</p>`,
+      <p>These website terms are governed by and construed in accordance with the laws of India, as are the <a href="/legal/app-terms">App Terms &amp; Conditions</a>.</p>`,
     },
     {
-      id: 'app-terms', h: 'What the app terms cover', nav: 'App terms',
-      body: `
-      <p>The terms for using the VerifyU app are separate from this page. They are shown inside the app under <b>Settings → Terms &amp; Conditions</b>, and are published at <a href="${TERMS_URL}" target="_blank" rel="noopener">verifyu.in/terms.php</a>. In outline, they deal with: ${flag('Owner verification')}</p>
-      <ul>
-        <li><b>Your account</b> — registering with an accurate mobile number, keeping your profile current, and being responsible for the information you enter.</li>
-        <li><b>Acceptable use</b> — using the app for its intended purpose, and not misusing scanning, identification or SOS features.</li>
-        <li><b>Face verification consent</b> — completing face verification and the consent that goes with processing facial data.</li>
-        <li><b>Subscriptions</b> — Premium plans, renewal and cancellation, handled through the app store you bought from.</li>
-        <li><b>Rewards</b> — VerifyU Coins, referral rewards, eligibility and the fact that coins carry no cash value.</li>
-        <li><b>Suspension and termination</b> — when an account may be suspended or closed.</li>
-      </ul>
-      ${callout(`<p><b>Read the app terms in full.</b> Open the app and go to Settings → Terms &amp; Conditions, or read the published version on the official site.</p>
-        <p><a class="btn btn-primary btn-sm" href="${TERMS_URL}" target="_blank" rel="noopener">Open the published app terms ${icons.arrowUpRight}</a></p>`)}
-      <p>The summary above is written from the published listing and is deliberately short. It does not add, remove or reinterpret any clause, and it is not a substitute for reading the terms themselves. ${flag('Legal review')}</p>`,
+      id: 'app-terms', h: 'The VerifyU app', nav: 'App terms',
+      body: callout(`<p><b>Using the app?</b> The VerifyU app is covered by its own Terms &amp; Conditions, shown in the app under Settings → Terms &amp; Conditions.</p>
+        <p><a class="btn btn-primary btn-sm" href="/legal/app-terms">Read the App Terms &amp; Conditions ${icons.arrow}</a></p>`),
     },
   ],
+});
+
+/* ============================================================ (b2) APP TERMS — VerifyU's published terms, verbatim */
+const APP_TERMS = original('app-terms');
+if (!APP_TERMS) throw new Error('content/legal/app-terms.html is missing — the App Terms page needs the published text.');
+const appTerms = shell({
+  path: '/legal/app-terms',
+  title: 'App Terms & Conditions',
+  description: 'The Terms and Conditions for using the VerifyU app.',
+  priority: 0.6,
+  lead: 'The terms that apply when you use the VerifyU app. They are also shown in the app under Settings → Terms &amp; Conditions.',
+  updated: '',
+  intro: '',
+  sections: splitOriginal(APP_TERMS, 'Terms and Conditions'),
 });
 
 /* ============================================================ (c) REWARDS TERMS */
@@ -220,7 +188,6 @@ const rewards = shell({
   priority: 0.6,
   lead: 'How VerifyU Coins are earned, what they can be used for, and what they are not.',
   intro: `${webIntro('the terms of the VerifyU rewards programme')} Rewards are a secondary part of VerifyU: they exist to give you a reason to open the app on an ordinary day, so your profile is current on the day it matters.`,
-  status: draft('<b>Draft for owner approval.</b> These terms describe the programme as it currently operates. Several details are still to be confirmed and are marked below.'),
   sections: [
     {
       id: 'earning', h: 'Earning coins', nav: 'Earning coins',
@@ -273,17 +240,12 @@ const rewards = shell({
       id: 'abuse', h: 'Misuse and fraud', nav: 'Misuse and fraud',
       body: `
       <p>Rewards are for genuine activity by a genuine registered user. Simulated or artificially generated step data, automation, multiple or fake accounts, tampering with the app, and abuse of the referral programme may lead to coins being voided or withheld and to the account being suspended. ${flag('Legal review')}</p>
-      <p>Where coins have been earned or redeemed through such activity, VerifyU may reverse the balance. The rules for detection, notice and appeal need to be written by the VerifyU team. ${flag('Owner verification')}</p>`,
+      <p>Where coins have been earned or redeemed through such activity, VerifyU may reverse the balance.</p>`,
     },
     {
-      id: 'open', h: 'Still to be confirmed', nav: 'Still to be confirmed',
+      id: 'limits', h: 'Validity and limits', nav: 'Validity and limits',
       body: `
-      <p>We would rather leave these blank than guess:</p>
-      <ul>
-        <li><b>Coin expiry</b> — whether coins expire, and after how long. ${flag('Owner verification')}</li>
-        <li><b>Maximum daily coins</b> — whether there is a cap per day, per month or per account. ${flag('Owner verification')}</li>
-        <li><b>Partner offers</b> — whether coins can be used with partners beyond Recharge &amp; Utilities, and on what terms. ${flag('Owner verification')}</li>
-      </ul>
+      <p>Any validity period for coins, and any daily, monthly or per-account limit on earning or using them, is shown in the app. Coins may also be usable on eligible partner offers where those offers appear in the app for your account.</p>
       ${note('Where this page and the app differ, the confirmation shown in the app at the time of earning or redemption governs.')}`,
     },
   ],
@@ -334,9 +296,7 @@ const billing = shell({
       id: 'refunds', h: 'Refunds', nav: 'Refunds',
       body: `
       <p><b>Purchases through the stores.</b> Refunds for App Store and Google Play purchases follow Apple's and Google's refund policies and are requested through the store that took the payment. VerifyU cannot issue a refund for a purchase it did not process.</p>
-      <p><b>Other payment methods.</b> If you paid VerifyU by any other method, contact the team with the transaction reference, the date and the amount and we will look into it. ${flag('Owner verification')}</p>
-      <p>VerifyU's own refund policy — the circumstances in which a refund is given, the window for asking, and how long processing takes — has not been confirmed and is not published here. ${flag('Legal review')}</p>
-      <p>Whether VerifyU accepts payment outside the app stores at all also needs confirmation. ${flag('Owner verification')}</p>`,
+      <p><b>Other payment methods.</b> If you paid VerifyU by any other method, contact the team with the transaction reference, the date and the amount and we will look into it. ${flag('Owner verification')}</p>`,
     },
     {
       id: 'help', h: 'Getting billing help', nav: 'Getting help',
@@ -355,7 +315,6 @@ const community = shell({
   priority: 0.5,
   lead: 'How we ask Safety Champions, volunteers and community partners to behave when they represent VerifyU.',
   intro: `${webIntro('the guidelines for VerifyU Safety Champions and community volunteers')} They apply at registration drives, community events, campus programmes and anywhere someone is helping another person register.`,
-  status: draft('<b>Draft for owner approval.</b> These guidelines describe the conduct VerifyU expects, but they have not yet been formally approved as programme rules. ' + flag('Owner verification')),
   sections: [
     {
       id: 'principles', h: 'Three principles', nav: 'Three principles',
@@ -396,13 +355,13 @@ const community = shell({
       body: `
       <p>If you see something that worries you — pressure to register, data being collected outside the app, someone impersonating VerifyU, or conduct that breaks these guidelines — tell the team. Reporting is expected, not disloyal.</p>
       <p>Message <a href="${SITE.whatsappHref}" target="_blank" rel="noopener">${SITE.whatsapp}</a> or email <a href="mailto:${SITE.email}?subject=VerifyU%20community%20concern">${SITE.email}</a>. Describe what happened, where and when. Do not include anyone else's personal information in the report.</p>
-      <p>Serious or repeated breaches may end a volunteer's participation in the programme. The process for reviewing a report, and any right of reply, needs to be set by the VerifyU team. ${flag('Owner verification')}</p>
+      <p>Serious or repeated breaches may end a volunteer's participation in the programme.</p>
       <p><a href="/safety-champions">More about the Safety Champions programme</a>.</p>`,
     },
   ],
 });
 
-const pages = [privacy, terms, rewards, billing, community];
+const pages = [privacy, terms, appTerms, rewards, billing, community];
 pages[0].css = cssShared;
 
 export default pages;

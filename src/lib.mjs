@@ -12,7 +12,6 @@ export const SITE = {
   appstore: 'https://apps.apple.com/in/app/verifyu/id6670164958',
   instagram: 'https://www.instagram.com/verifyu.in/',
   linkedin: 'https://www.linkedin.com/company/verifyu-in/',
-  privacyExternal: 'https://verifyu.in/privacy-policy/',
   year: 2026,
 };
 
@@ -185,7 +184,7 @@ export const footer = () => `
       <div><h4>Support</h4><ul>
         <li><a href="/support">Help Centre</a></li><li><a href="/support#contact">Contact</a></li><li><a href="/account-deletion">Account deletion</a></li></ul></div>
       <div><h4>Legal</h4><ul>
-        <li><a href="/legal/privacy">Privacy</a></li><li><a href="/legal/terms">Terms</a></li><li><a href="/legal/rewards-terms">Rewards terms</a></li><li><a href="/legal/billing">Billing & refunds</a></li></ul></div>
+        <li><a href="/legal/privacy">Privacy</a></li><li><a href="/legal/terms">Website terms</a></li><li><a href="/legal/app-terms">App terms</a></li><li><a href="/legal/rewards-terms">Rewards terms</a></li><li><a href="/legal/billing">Billing & refunds</a></li></ul></div>
     </div>
     <div class="footer-mid">
       <div><div class="meta" style="color:rgba(255,255,255,.5)">Get VerifyU</div><div class="mt-2">${stores()}</div></div>
@@ -210,7 +209,9 @@ export const device = ({ src = '/images/app/home-dashboard.webp', alt = 'VerifyU
 export const check = (t) => `<li class="check">${icons.check}<span>${t}</span></li>`;
 export const checks = (arr) => `<ul class="checks">${arr.map(check).join('')}</ul>`;
 export const note = (t) => `<p class="note">${icons.info}<span>${t}</span></p>`;
-export const flag = (t = 'Owner verification') => `<span class="flag" title="This statement needs confirmation by the VerifyU team before launch">${t}</span>`;
+// Review marker kept in the source for the VerifyU team: statements wrapped in flag() still need owner or legal
+// confirmation (listed in the verification report). It renders nothing on the public site.
+export const flag = () => '';
 
 export const sectionHead = ({ eyebrow, title, lead, center = false, cls = '' }) => `
 <div class="section-head ${center ? 'is-center' : ''} ${cls}" data-reveal>

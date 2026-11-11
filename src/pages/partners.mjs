@@ -261,7 +261,7 @@ ${LIVE_PARTNERS.length ? `<!-- LIVE PARTNERS (admin-managed) -->
         <div class="rp-float rp-float-1"><span class="coin"><i></i>+5 VerifyU Coins</span></div>
         <div class="rp-float rp-float-2"><span class="rp-redeem">${icons.check}<span><b>Offer unlocked</b>Your café · 20% OFF</span></span></div>
       </div>
-      <p class="rp-stage-cap">Illustrative concept — offer placement and format are being finalised.</p>
+      <p class="rp-stage-cap">Illustrative concept — not a live partner offer.</p>
     </div>
   </div>
 </section>
@@ -344,7 +344,7 @@ ${LIVE_PARTNERS.length ? `<!-- LIVE PARTNERS (admin-managed) -->
         <p class="small rp-coins-note">VerifyU Coins are an in-app reward with no cash value. Partner offers are subject to review, eligibility and the <a class="ab-ext" href="/legal/rewards-terms">Rewards terms</a>.</p>
       </div>
     </div>
-    <p class="small mt-4 pt-offers-note">Illustrative flow. Tooling for partner offers — how an offer is created, targeted, redeemed and reported — is being confirmed with the VerifyU team. ${flag()}</p>
+    <p class="small mt-4 pt-offers-note">Illustrative flow. How an offer is created, targeted, redeemed and reported is agreed with each partner.</p>
     <div class="row mt-4"><button type="button" class="btn btn-white" data-wl-open>Join the Rewards Partner waitlist ${icons.arrow}</button><a class="btn btn-ghost" href="/rewards">How VerifyU Rewards work</a></div>
   </div>
 </section>

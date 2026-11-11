@@ -83,26 +83,23 @@ ${pageHero({
       </article>`).join('')}
     </div>
     ${note('Dates and headlines are taken from the published articles. SiliconIndia does not display a publication date on the page, so none is shown.')}
-    ${note(`verifyu.in also lists a “Google Play App for Good” recognition. We have not been able to confirm it against a Google source, so no badge is shown here until it is confirmed. ${flag()} No other awards, certifications or rankings are claimed.`)}
   </div>
 </section>
 
 <!-- COMMUNITY -->
 <section class="section" id="community">
   <div class="container">
-    ${sectionHead({ eyebrow: 'Community', title: 'Where VerifyU has met people in person.', lead: 'Registration is easier when someone is standing next to you. These are the community activities described on verifyu.in.' })}
+    ${sectionHead({ eyebrow: 'Community', title: 'Where VerifyU has met people in person.', lead: 'Registration is easier when someone is standing next to you. These are some of the community activities so far.' })}
     <div class="grid grid-2" data-stagger>
       <article class="card is-xl is-static pr-comm">
         <div class="icon is-teal">${icons.fitness}</div>
         <h3 class="h3">Lucknow running communities</h3>
         <p class="body mt-2">Runners in Lucknow were introduced to VerifyU registration and to what emergency identity means for someone training alone, early in the morning, often without a phone or ID on them.</p>
-        <p class="small mt-3">As described on <a class="link" href="${LINKS.site}" target="_blank" rel="noopener">verifyu.in</a></p>
       </article>
       <article class="card is-xl is-static pr-comm">
         <div class="icon is-blue">${icons.senior}</div>
         <h3 class="h3">Mysuru Strollathon</h3>
         <p class="body mt-2">At the Strollathon organised by Vayah Vikas, senior participants were helped with registration — profiles, emergency contacts and medical information set up with assistance rather than left as homework.</p>
-        <p class="small mt-3">As described on <a class="link" href="${LINKS.site}" target="_blank" rel="noopener">verifyu.in</a></p>
       </article>
     </div>
     <figure class="band mt-5" data-reveal="scale">

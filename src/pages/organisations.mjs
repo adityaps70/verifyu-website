@@ -99,7 +99,6 @@ const body = `
         </div>
       </div>
     </div>
-    <p class="small mt-4 og-explore-note">Workflows marked <span class="flag">Owner verification</span> are proposals to be confirmed with the VerifyU team before they are relied upon.</p>
   </div>
 </section>
 
