@@ -191,7 +191,7 @@ export const footer = () => `
       <div class="small" style="color:rgba(255,255,255,.55);max-width:34ch">Free to register. Premium features available. Available for Android and iPhone in India.</div>
     </div>
     <div class="footer-bottom">
-      <div>© ${SITE.year} ${SITE.entity} All rights reserved.</div>
+      <div>© ${SITE.year} ${SITE.entity} All rights reserved. · <a href="https://kodehelix.in/" target="_blank" rel="noopener">Website by Kodehelix</a></div>
       <p>VerifyU supports identification and communication. It does not replace emergency services and does not guarantee assistance, identification or response times. Feature access, rewards and availability depend on the app version, plan, permissions and applicable terms.</p>
     </div>
   </div>
